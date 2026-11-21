@@ -1,12 +1,11 @@
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { WHATSAPP_CENTRAL } from '@/config';
 import { EMPRESAS, TIPOS, type TipoEmpresa } from '@/data/empresas';
 import { CartaoEmpresa } from '@/ui/empresa';
-import { NOME_APP, cores } from '@/ui/theme';
-import { abrirWhatsApp } from '@/whatsapp';
+import { cores } from '@/ui/theme';
 
 function normalizar(t: string) {
   return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -60,12 +59,12 @@ export default function Empresas() {
         )}
 
         <Pressable
-          onPress={() => abrirWhatsApp(WHATSAPP_CENTRAL, `Olá! Quero cadastrar minha empresa no guia do ${NOME_APP}.`)}
+          onPress={() => router.push({ pathname: '/cadastro', params: { grupo: 'empresa' } })}
           style={estilos.cadastre}>
           <Text style={{ fontSize: 26 }}>🏢</Text>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>Tem uma empresa em Capelinha?</Text>
-            <Text style={{ color: '#D6E4FF', fontSize: 13 }}>Cadastre grátis e receba clientes pelo WhatsApp</Text>
+            <Text style={{ color: '#fff', fontWeight: '800', fontSize: 15 }}>Tem empresa ou presta serviço?</Text>
+            <Text style={{ color: '#D6E4FF', fontSize: 13 }}>Cadastre-se grátis e seja encontrado</Text>
           </View>
           <Text style={{ color: '#fff', fontSize: 22 }}>›</Text>
         </Pressable>

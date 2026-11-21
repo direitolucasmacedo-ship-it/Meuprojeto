@@ -36,3 +36,13 @@ export function formatarTelefone(numero: string) {
   const meio = resto.length === 9 ? 5 : 4;
   return `(${ddd}) ${resto.slice(0, meio)}-${resto.slice(meio)}`;
 }
+
+// Abre o app de e-mail com assunto e texto preenchidos
+export async function abrirEmail(para: string, assunto: string, corpo: string) {
+  const url = `mailto:${para}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
+  try {
+    await Linking.openURL(url);
+  } catch {
+    // sem app de e-mail configurado
+  }
+}

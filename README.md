@@ -7,6 +7,8 @@ tudo em um só app, simples e rápido.
 2. 🛍️ **Delivery**: restaurantes, mercado, farmácia, bebidas, pet shop, entregas.
 3. 🏢 **Guia de empresas**: atacado, varejo e serviços da cidade, com contato direto
    (WhatsApp, ligar, ver no mapa).
+4. 🚀 **Cadastre-se / Fale conosco**: empresas, autônomos e mototaxistas escolhem a
+   categoria e preenchem os dados. A **ficha chega pronta no WhatsApp** (ou e-mail) do dono do app.
 
 > **Situação atual: protótipo do App do Cliente.**
 > Pedidos, corridas e contatos são enviados **pelo WhatsApp**. As lojas, empresas e
@@ -23,16 +25,21 @@ tudo em um só app, simples e rápido.
 |---|---|---|
 | ![](docs/telas/4-mototaxi-encontrado.png) | ![](docs/telas/5-empresas.png) | ![](docs/telas/6-empresa.png) |
 
+| Cadastre-se | Formulário |
+|---|---|
+| ![](docs/telas/7-cadastro.png) | ![](docs/telas/8-cadastro-formulario.png) |
+
 ## ⚙️ Antes de usar de verdade
 
 | O quê | Arquivo |
 |---|---|
-| Números de WhatsApp da central e de corridas | `cliente/src/config.ts` |
+| Números de WhatsApp da central, corridas e cadastros + e-mail dos cadastros | `cliente/src/config.ts` |
+| Categorias do formulário de cadastro | `cliente/src/data/cadastro.ts` |
 | Mototaxistas (nome, moto, placa, WhatsApp) | `cliente/src/data/mototaxi.ts` |
 | Empresas do guia (atacado, varejo, serviços) | `cliente/src/data/empresas.ts` |
 | Lojas do delivery, produtos e tarifas de corrida | `cliente/src/data/mock.ts` |
 
-Todos os números que estão lá hoje são **fictícios**.
+Todos os números e o e-mail que estão lá hoje são **fictícios**.
 
 ## Como testar no seu celular
 
@@ -65,6 +72,7 @@ cliente/                   App do cliente (React Native + Expo)
     loja/[id].tsx          Produtos da loja
     sacola.tsx             Sacola → pedido pelo WhatsApp
     corrida.tsx            Carro e entregas
+    cadastro.tsx           Cadastre-se / Fale conosco → ficha no WhatsApp ou e-mail
   src/data/                Dados de EXEMPLO
   src/config.ts            Números de WhatsApp (PREENCHER)
   src/ui/                  Cores (tema azul) e componentes

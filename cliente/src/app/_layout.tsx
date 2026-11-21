@@ -25,6 +25,7 @@ export default function RootLayout() {
         <Stack.Screen name="empresa/[id]" options={{ title: '' }} />
         <Stack.Screen name="sacola" options={{ title: 'Sacola' }} />
         <Stack.Screen name="corrida" options={{ title: 'Pedir corrida' }} />
+        <Stack.Screen name="cadastro" options={{ title: 'Cadastre-se' }} />
       </Stack>
     </AppProvider>
   );

@@ -155,6 +155,18 @@ export default function Inicio() {
           </ScrollView>
         </View>
 
+        {/* Chamada para cadastro */}
+        <Pressable
+          onPress={() => router.push('/cadastro')}
+          style={({ pressed }) => [estilos.cadastro, pressed && { opacity: 0.9 }]}>
+          <Text style={{ fontSize: 26 }}>🚀</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: cores.textoForte, fontWeight: '800', fontSize: 15 }}>Sua empresa ou serviço aqui</Text>
+            <Text style={{ color: cores.textoSuave, fontSize: 13 }}>Cadastre-se grátis e seja encontrado</Text>
+          </View>
+          <Text style={{ color: cores.primaria, fontWeight: '800' }}>Cadastrar</Text>
+        </Pressable>
+
         {/* Lojas do delivery */}
         <View style={{ marginTop: 26, gap: 12 }}>
           <TituloSecao>Peça agora</TituloSecao>
@@ -254,6 +266,19 @@ const estilos = StyleSheet.create({
   },
   empresaNome: { fontSize: 13, fontWeight: '700', color: cores.textoForte, minHeight: 34 },
   empresaRamo: { fontSize: 11, color: cores.textoSuave },
+  cadastro: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginHorizontal: 16,
+    marginTop: 16,
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: cores.primariaClara,
+    borderWidth: 1,
+    borderColor: '#D3E1FF',
+    borderStyle: 'dashed',
+  },
   chip: { borderWidth: 1, borderColor: cores.borda, borderRadius: 18, paddingHorizontal: 14, paddingVertical: 7 },
   chipTexto: { fontSize: 13, color: cores.texto, fontWeight: '600' },
 });
