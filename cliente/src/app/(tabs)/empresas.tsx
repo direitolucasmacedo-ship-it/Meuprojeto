@@ -70,6 +70,12 @@ export default function Empresas() {
           </View>
         )}
 
+        {tipo === 'publico' && (
+          <Text style={estilos.aviso}>
+            Contatos de fontes públicas (nov/2025). Algum número mudou? Toque no contato e avise a gente.
+          </Text>
+        )}
+
         <Text style={estilos.contagem}>
           {lista.length} {lista.length === 1 ? 'resultado' : 'resultados'}
         </Text>
@@ -116,6 +122,7 @@ const estilos = StyleSheet.create({
   emergenciaBotao: { flex: 1, backgroundColor: '#fff', borderRadius: 12, paddingVertical: 10, alignItems: 'center' },
   emergenciaNumero: { fontSize: 18, fontWeight: '900', color: '#DC2626' },
   emergenciaNome: { fontSize: 11, color: cores.texto },
+  aviso: { fontSize: 12, color: cores.textoSuave, paddingHorizontal: 16, paddingTop: 12, lineHeight: 17 },
   contagem: { fontSize: 12, color: cores.textoSuave, paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 },
   cadastre: {
     flexDirection: 'row',

@@ -1,7 +1,7 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { WHATSAPP_CENTRAL } from '@/config';
+import { WHATSAPP_CADASTROS } from '@/config';
 import { EMPRESAS } from '@/data/empresas';
 import { abrirLoja } from '@/ui/componentes';
 import { mensagemContato, NOME_TIPO } from '@/ui/empresa';
@@ -13,7 +13,7 @@ export default function TelaEmpresa() {
   const e = EMPRESAS.find((x) => x.id === id);
   if (!e) return <Text style={{ padding: 16 }}>Empresa não encontrada.</Text>;
   const telefone = e.telefone ?? e.whatsapp;
-  const temEndereco = !/^Atend/.test(e.endereco);
+  const temEndereco = !!e.endereco && !/^Atend/.test(e.endereco);
 
   return (
     <ScrollView style={{ backgroundColor: cores.fundo }} contentContainerStyle={{ paddingBottom: 32 }}>
@@ -47,7 +47,7 @@ export default function TelaEmpresa() {
           </Pressable>
         )}
         {temEndereco && (
-          <Pressable onPress={() => abrirMapa(e.endereco)} style={[estilos.acao, { backgroundColor: cores.marinho }]}>
+          <Pressable onPress={() => abrirMapa(e.endereco!)} style={[estilos.acao, { backgroundColor: cores.marinho }]}>
             <Text style={estilos.acaoEmoji}>🗺️</Text>
             <Text style={estilos.acaoTexto}>Mapa</Text>
           </Pressable>
@@ -66,14 +66,19 @@ export default function TelaEmpresa() {
       )}
 
       <View style={estilos.infos}>
-        <Linha emoji="📍" titulo="Endereço" valor={e.endereco} />
-        <Linha emoji="🕒" titulo="Horário" valor={e.horario} />
-        {e.whatsapp && <Linha emoji="📱" titulo="WhatsApp" valor={formatarTelefone(e.whatsapp)} />}
-        {e.telefone && e.telefone !== e.whatsapp && <Linha emoji="☎️" titulo="Telefone" valor={formatarTelefone(e.telefone)} />}
+        {e.endereco && <Linha emoji="📍" titulo="Endereço" valor={e.endereco} onPress={temEndereco ? () => abrirMapa(e.endereco!) : undefined} />}
+        {e.horario && <Linha emoji="🕒" titulo="Horário" valor={e.horario} />}
+        {e.whatsapp && <Linha emoji="📱" titulo="WhatsApp" valor={formatarTelefone(e.whatsapp)} onPress={() => abrirWhatsApp(e.whatsapp!, mensagemContato(e))} />}
+        {e.telefone && e.telefone !== e.whatsapp && (
+          <Linha emoji="☎️" titulo="Telefone" valor={formatarTelefone(e.telefone)} onPress={() => ligar(e.telefone!)} />
+        )}
+        {e.outrosTelefones?.map((t) => (
+          <Linha key={t.numero} emoji="☎️" titulo={t.rotulo} valor={formatarTelefone(t.numero)} onPress={() => ligar(t.numero)} />
+        ))}
+        {e.email && <Linha emoji="✉️" titulo="E-mail" valor={e.email} onPress={() => Linking.openURL(`mailto:${e.email}`)} />}
+        {e.site && <Linha emoji="🌐" titulo="Site" valor={e.site.replace(/^https?:\/\//, '')} onPress={() => Linking.openURL(e.site!)} />}
         {e.instagram && (
-          <Pressable onPress={() => Linking.openURL(`https://instagram.com/${e.instagram}`)}>
-            <Linha emoji="📸" titulo="Instagram" valor={`@${e.instagram}`} />
-          </Pressable>
+          <Linha emoji="📸" titulo="Instagram" valor={`@${e.instagram}`} onPress={() => Linking.openURL(`https://instagram.com/${e.instagram}`)} />
         )}
         {(e.tipo === 'varejo' || e.tipo === 'atacado') && (
           <Linha emoji="🚚" titulo="Entrega" valor={e.fazEntrega ? 'Faz entrega' : 'Não informado'} />
@@ -81,7 +86,7 @@ export default function TelaEmpresa() {
       </View>
 
       <Pressable
-        onPress={() => abrirWhatsApp(WHATSAPP_CENTRAL, `Olá! As informações de "${e.nome}" no guia estão desatualizadas: `)}
+        onPress={() => abrirWhatsApp(WHATSAPP_CADASTROS, `Olá! As informações de "${e.nome}" no guia estão desatualizadas: `)}
         style={{ alignSelf: 'center', marginTop: 20 }}>
         <Text style={{ color: cores.textoSuave, fontSize: 12 }}>Informações desatualizadas? Avise a gente.</Text>
       </Pressable>
@@ -89,15 +94,16 @@ export default function TelaEmpresa() {
   );
 }
 
-function Linha({ emoji, titulo, valor }: { emoji: string; titulo: string; valor: string }) {
+function Linha({ emoji, titulo, valor, onPress }: { emoji: string; titulo: string; valor: string; onPress?: () => void }) {
   return (
-    <View style={estilos.linha}>
+    <Pressable onPress={onPress} disabled={!onPress} style={estilos.linha}>
       <Text style={{ fontSize: 18, width: 26 }}>{emoji}</Text>
       <View style={{ flex: 1 }}>
         <Text style={{ fontSize: 12, color: cores.textoSuave }}>{titulo}</Text>
-        <Text style={{ fontSize: 15, color: cores.textoForte }}>{valor}</Text>
+        <Text style={{ fontSize: 15, color: onPress ? cores.primaria : cores.textoForte }}>{valor}</Text>
       </View>
-    </View>
+      {onPress && <Text style={{ color: cores.textoSuave, fontSize: 18 }}>›</Text>}
+    </Pressable>
   );
 }
 

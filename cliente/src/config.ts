@@ -12,9 +12,8 @@ export const WHATSAPP_CENTRAL = '5533900000000';
 // Motoboy / mototáxi / motorista que recebe as corridas e entregas
 export const WHATSAPP_CORRIDAS = '5533900000001';
 
-// Para onde chegam os CADASTROS e mensagens do "Fale conosco".
-// Pode ser o mesmo número da central ou outro só para isso.
-export const WHATSAPP_CADASTROS = WHATSAPP_CENTRAL;
+// Para onde chegam os CADASTROS e mensagens do "Fale conosco". (REAL)
+export const WHATSAPP_CADASTROS = '5533991088301';
 
-// E-mail que recebe os cadastros (opção "enviar por e-mail"). FICTÍCIO: troque pelo seu.
-export const EMAIL_CADASTROS = 'contato@exemplo.com.br';
+// E-mail que recebe os cadastros (opção "enviar por e-mail"). (REAL)
+export const EMAIL_CADASTROS = 'direitolucasmacedo@gmail.com';

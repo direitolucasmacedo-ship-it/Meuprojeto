@@ -13,10 +13,13 @@ export type Empresa = {
   ramo: string; // ex.: "Materiais de construção"
   emoji: string;
   descricao: string;
-  endereco: string;
-  horario: string;
+  endereco?: string;
+  horario?: string;
   whatsapp?: string; // 55 + DDD + número
   telefone?: string; // 55 + DDD + número, ou número curto (ex.: '192')
+  outrosTelefones?: { rotulo: string; numero: string }[];
+  email?: string;
+  site?: string;
   emergencia?: boolean;
   instagram?: string;
   fazEntrega?: boolean;
@@ -185,109 +188,170 @@ export const EMPRESAS: Empresa[] = [
   },
 
   // ---------- UTILIDADE PÚBLICA ----------
-  // Emergência: números oficiais nacionais (funcionam em qualquer cidade)
-  {
-    id: 'samu',
-    nome: 'SAMU',
-    tipo: 'publico',
-    ramo: 'Emergência médica',
-    emoji: '🚑',
-    descricao: 'Atendimento de urgência e emergência médica. Ligação gratuita, 24 horas.',
-    endereco: 'Atendimento por telefone',
-    horario: '24 horas',
-    telefone: '192',
-    emergencia: true,
-  },
-  {
-    id: 'policia-militar',
-    nome: 'Polícia Militar',
-    tipo: 'publico',
-    ramo: 'Emergência policial',
-    emoji: '🚓',
-    descricao: 'Emergências policiais, crimes em andamento. Ligação gratuita, 24 horas.',
-    endereco: 'Atendimento por telefone',
-    horario: '24 horas',
-    telefone: '190',
-    emergencia: true,
-  },
-  {
-    id: 'bombeiros',
-    nome: 'Corpo de Bombeiros',
-    tipo: 'publico',
-    ramo: 'Incêndio e resgate',
-    emoji: '🚒',
-    descricao: 'Incêndios, resgates e salvamentos. Ligação gratuita, 24 horas.',
-    endereco: 'Atendimento por telefone',
-    horario: '24 horas',
-    telefone: '193',
-    emergencia: true,
-  },
-  {
-    id: 'defesa-civil',
-    nome: 'Defesa Civil',
-    tipo: 'publico',
-    ramo: 'Desastres e riscos',
-    emoji: '⛑️',
-    descricao: 'Enchentes, deslizamentos, árvores caídas e áreas de risco.',
-    endereco: 'Atendimento por telefone',
-    horario: '24 horas',
-    telefone: '199',
-    emergencia: true,
-  },
-  {
-    id: 'cemig',
-    nome: 'Cemig (energia)',
-    tipo: 'publico',
-    ramo: 'Falta de energia',
-    emoji: '⚡',
-    descricao: 'Falta de luz, fios caídos e problemas na rede elétrica.',
-    endereco: 'Atendimento por telefone',
-    horario: '24 horas',
-    telefone: '116',
-  },
-  {
-    id: 'copasa',
-    nome: 'Copasa (água)',
-    tipo: 'publico',
-    ramo: 'Água e esgoto',
-    emoji: '💧',
-    descricao: 'Falta de água, vazamentos e esgoto.',
-    endereco: 'Atendimento por telefone',
-    horario: '24 horas',
-    telefone: '115',
-  },
-  // Órgãos locais: números FICTÍCIOS — substituir pelos oficiais de Capelinha
+  // Fonte: sites de órgãos públicos e guias online (levantamento de nov/2025).
+  // Alguns números podem mudar: confirmar periodicamente.
+
+  // Emergência: números oficiais nacionais (ligação gratuita)
+  { id: 'samu', nome: 'SAMU', tipo: 'publico', ramo: 'Emergência médica', emoji: '🚑', descricao: 'Urgência e emergência médica. Ligação gratuita, 24 horas.', horario: '24 horas', telefone: '192', emergencia: true },
+  { id: 'policia-militar', nome: 'Polícia Militar', tipo: 'publico', ramo: 'Emergência policial', emoji: '🚓', descricao: 'Emergências policiais e crimes em andamento. Ligação gratuita, 24 horas.', horario: '24 horas', telefone: '190', emergencia: true },
+  { id: 'bombeiros', nome: 'Corpo de Bombeiros', tipo: 'publico', ramo: 'Incêndio e resgate', emoji: '🚒', descricao: 'Incêndios, resgates e salvamentos. Ligação gratuita, 24 horas.', horario: '24 horas', telefone: '193', emergencia: true },
+  { id: 'defesa-civil', nome: 'Defesa Civil', tipo: 'publico', ramo: 'Desastres e riscos', emoji: '⛑️', descricao: 'Enchentes, deslizamentos, árvores caídas e áreas de risco.', horario: '24 horas', telefone: '199', emergencia: true },
+  { id: 'policia-civil-197', nome: 'Polícia Civil (denúncias)', tipo: 'publico', ramo: 'Polícia Civil', emoji: '🕵️', descricao: 'Disque-denúncia da Polícia Civil. Ligação gratuita.', telefone: '197' },
+  { id: 'central-mulher', nome: 'Central de Atendimento à Mulher', tipo: 'publico', ramo: 'Violência contra a mulher', emoji: '💜', descricao: 'Denúncias e orientação para mulheres em situação de violência. Gratuito, 24 horas, sigiloso.', horario: '24 horas', telefone: '180' },
+  { id: 'disque-denuncia', nome: 'Disque Denúncia', tipo: 'publico', ramo: 'Denúncia anônima', emoji: '📢', descricao: 'Denúncia anônima de crimes. Ligação gratuita.', telefone: '181' },
+  { id: 'cemig', nome: 'Cemig (energia)', tipo: 'publico', ramo: 'Falta de energia', emoji: '⚡', descricao: 'Falta de luz, fios caídos e problemas na rede elétrica.', horario: '24 horas', telefone: '116' },
+  { id: 'copasa', nome: 'Copasa (água)', tipo: 'publico', ramo: 'Água e esgoto', emoji: '💧', descricao: 'Falta de água, vazamentos e esgoto.', horario: '24 horas', telefone: '115' },
+
+  // Prefeitura e Câmara
   {
     id: 'prefeitura',
-    nome: 'Prefeitura Municipal',
+    nome: 'Prefeitura de Capelinha',
     tipo: 'publico',
-    ramo: 'Órgão público',
+    ramo: 'Órgão público municipal',
     emoji: '🏛️',
-    descricao: 'Atendimento ao cidadão, protocolo, tributos e secretarias. (Número de exemplo)',
-    endereco: 'Centro',
-    horario: 'Seg a Sex 8h–17h',
-    telefone: '5533900000030',
+    descricao: 'Atendimento ao cidadão, protocolo, tributos e secretarias.',
+    endereco: 'Avenida Tico Neves, 1.455 - Vista Alegre',
+    telefone: '08002230028',
+    outrosTelefones: [{ rotulo: 'Gabinete', numero: '553335161348' }],
+    email: 'comunicacao@pmcapelinha.mg.gov.br',
+    site: 'https://pmcapelinha.mg.gov.br',
   },
+  {
+    id: 'secretaria-educacao',
+    nome: 'Secretaria Municipal de Educação',
+    tipo: 'publico',
+    ramo: 'Educação',
+    emoji: '🎓',
+    descricao: 'Matrículas, escolas municipais e transporte escolar.',
+    endereco: 'Rua Eunésio Dias Magalhães, 650 - Planalto',
+    telefone: '553335161804',
+  },
+  {
+    id: 'camara',
+    nome: 'Câmara Municipal',
+    tipo: 'publico',
+    ramo: 'Poder Legislativo',
+    emoji: '🏛️',
+    descricao: 'Vereadores, sessões e projetos de lei do município.',
+    endereco: 'Rua José Pimenta de Figueiredo, 5 - Centro',
+    telefone: '553340425410',
+  },
+
+  // Saúde
   {
     id: 'hospital',
-    nome: 'Hospital',
+    nome: 'Fundação Hospitalar São Vicente de Paulo',
     tipo: 'publico',
-    ramo: 'Saúde',
+    ramo: 'Hospital',
     emoji: '🏥',
-    descricao: 'Pronto atendimento e internação. (Número de exemplo)',
-    endereco: 'Capelinha',
+    descricao: 'Pronto atendimento, obstetrícia, maternidade, internação e cirurgias.',
+    endereco: 'Avenida JK, 221 - São Geraldo',
+    horario: 'Pronto atendimento 24 horas',
+    telefone: '553335161366',
+  },
+
+  // Segurança
+  {
+    id: 'delegacia-plantao',
+    nome: 'Delegacia de Plantão e Delegacia da Mulher',
+    tipo: 'publico',
+    ramo: 'Polícia Civil',
+    emoji: '👮',
+    descricao: 'Registro de ocorrências 24 horas e atendimento especializado à mulher.',
+    endereco: 'Rua Augusto Barbosa, 52 - Cidade Nova',
     horario: '24 horas',
-    telefone: '5533900000031',
+    telefone: '553335161947',
   },
   {
-    id: 'rodoviaria',
-    nome: 'Rodoviária',
+    id: 'delegacia-regional',
+    nome: 'Delegacia Regional de Polícia Civil',
     tipo: 'publico',
-    ramo: 'Transporte',
-    emoji: '🚌',
-    descricao: 'Horários e passagens de ônibus. (Número de exemplo)',
-    endereco: 'Capelinha',
-    horario: 'Todos os dias',
-    telefone: '5533900000032',
+    ramo: 'Polícia Civil',
+    emoji: '🏢',
+    descricao: 'Delegacia Regional da Polícia Civil de Minas Gerais.',
+    endereco: 'Rua Maria Moreira de Andrade, 355 - Acácias',
+    telefone: '553335161187',
+  },
+  {
+    id: 'posto-identificacao',
+    nome: 'Posto de Identificação',
+    tipo: 'publico',
+    ramo: 'Carteira de identidade',
+    emoji: '🪪',
+    descricao: 'Emissão da carteira de identidade.',
+    horario: '8h30 às 18h30',
+    telefone: '553335161947',
+  },
+
+  // Justiça e cartórios
+  {
+    id: 'forum',
+    nome: 'Fórum de Capelinha',
+    tipo: 'publico',
+    ramo: 'Justiça',
+    emoji: '⚖️',
+    descricao: 'Fórum da Comarca de Capelinha.',
+    endereco: 'Rua das Hortências, 321 - Bouganville',
+    telefone: '553335166900',
+    outrosTelefones: [
+      { rotulo: 'Telefone 2', numero: '553335166901' },
+      { rotulo: 'Telefone 3', numero: '553335166902' },
+    ],
+  },
+  {
+    id: 'ministerio-publico',
+    nome: 'Ministério Público (Promotorias)',
+    tipo: 'publico',
+    ramo: 'Justiça',
+    emoji: '⚖️',
+    descricao: 'Promotorias de Justiça da Comarca de Capelinha.',
+    telefone: '553335161817',
+    outrosTelefones: [{ rotulo: '2ª Promotoria', numero: '553335161929' }],
+  },
+  {
+    id: 'cartorio-eleitoral',
+    nome: 'Cartório Eleitoral',
+    tipo: 'publico',
+    ramo: 'Título de eleitor',
+    emoji: '🗳️',
+    descricao: 'Título de eleitor, biometria e transferência de domicílio eleitoral.',
+    endereco: 'Rua Governador Valadares, 251',
+    telefone: '553130109315',
+  },
+  { id: 'oab', nome: 'OAB Capelinha', tipo: 'publico', ramo: 'Ordem dos Advogados', emoji: '👨‍⚖️', descricao: 'Subseção da Ordem dos Advogados do Brasil.', telefone: '5533999189467' },
+  {
+    id: 'registro-civil',
+    nome: 'Cartório de Registro Civil',
+    tipo: 'publico',
+    ramo: 'Cartório',
+    emoji: '📜',
+    descricao: 'Certidões de nascimento, casamento e óbito.',
+    endereco: 'Av. Geraldo Prisco, 107',
+    telefone: '553335161781',
+  },
+  { id: 'tabelionato-1', nome: '1º Tabelionato de Notas', tipo: 'publico', ramo: 'Cartório', emoji: '📜', descricao: 'Escrituras, procurações, reconhecimento de firma e autenticações.', telefone: '553335164462' },
+  { id: 'tabelionato-2', nome: '2º Tabelionato de Notas e Protesto', tipo: 'publico', ramo: 'Cartório', emoji: '📜', descricao: 'Notas, protesto de títulos, reconhecimento de firma.', telefone: '553335164430' },
+  { id: 'registro-imoveis', nome: 'Cartório de Registro de Imóveis', tipo: 'publico', ramo: 'Cartório', emoji: '🏠', descricao: 'Matrículas, registros e certidões de imóveis.', telefone: '553335164466' },
+
+  // Órgãos estaduais
+  {
+    id: 'der',
+    nome: 'DER-MG',
+    tipo: 'publico',
+    ramo: 'Estradas',
+    emoji: '🛣️',
+    descricao: 'Departamento de Estradas de Rodagem de Minas Gerais.',
+    telefone: '553335166000',
+    outrosTelefones: [{ rotulo: 'Telefone 2', numero: '553335161374' }],
+  },
+  {
+    id: 'ima',
+    nome: 'IMA',
+    tipo: 'publico',
+    ramo: 'Defesa agropecuária',
+    emoji: '🐄',
+    descricao: 'Instituto Mineiro de Agropecuária: vacinação, trânsito de animais e sanidade vegetal.',
+    endereco: 'Rua Capitão Domingos Pimenta, 19',
+    telefone: '553335162062',
   },
 ];

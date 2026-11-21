@@ -40,9 +40,10 @@ tudo em um só app, simples e rápido.
 | Guia: empresas, profissionais e utilidade pública | `cliente/src/data/empresas.ts` |
 | Lojas do delivery, produtos e tarifas de corrida | `cliente/src/data/mock.ts` |
 
-Todos os números e o e-mail que estão lá hoje são **fictícios**, exceto os de emergência
-(190, 192, 193, 199) e Cemig (116) / Copasa (115), que são os oficiais. Prefeitura, hospital
-e rodoviária precisam receber os números reais de Capelinha.
+- ✅ **Reais:** WhatsApp e e-mail que recebem os cadastros; contatos de **utilidade pública**
+  (emergência, prefeitura, câmara, hospital, delegacias, fórum, cartórios, DER, IMA...),
+  levantados de fontes públicas em nov/2025 — **confirmar periodicamente**.
+- ⚠️ **Fictícios:** lojas, empresas, profissionais, mototaxistas, WhatsApp da central e de corridas.
 
 ## Como testar no seu celular
 
