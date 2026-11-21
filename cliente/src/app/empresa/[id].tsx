@@ -12,6 +12,8 @@ export default function TelaEmpresa() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const e = EMPRESAS.find((x) => x.id === id);
   if (!e) return <Text style={{ padding: 16 }}>Empresa não encontrada.</Text>;
+  const telefone = e.telefone ?? e.whatsapp;
+  const temEndereco = !/^Atend/.test(e.endereco);
 
   return (
     <ScrollView style={{ backgroundColor: cores.fundo }} contentContainerStyle={{ paddingBottom: 32 }}>
@@ -30,18 +32,26 @@ export default function TelaEmpresa() {
 
       {/* Ações de contato */}
       <View style={estilos.acoes}>
-        <Pressable onPress={() => abrirWhatsApp(e.whatsapp, mensagemContato(e))} style={[estilos.acao, { backgroundColor: cores.whatsapp }]}>
-          <Text style={estilos.acaoEmoji}>💬</Text>
-          <Text style={estilos.acaoTexto}>WhatsApp</Text>
-        </Pressable>
-        <Pressable onPress={() => ligar(e.telefone ?? e.whatsapp)} style={[estilos.acao, { backgroundColor: cores.primaria }]}>
-          <Text style={estilos.acaoEmoji}>📞</Text>
-          <Text style={estilos.acaoTexto}>Ligar</Text>
-        </Pressable>
-        <Pressable onPress={() => abrirMapa(e.endereco)} style={[estilos.acao, { backgroundColor: cores.marinho }]}>
-          <Text style={estilos.acaoEmoji}>🗺️</Text>
-          <Text style={estilos.acaoTexto}>Mapa</Text>
-        </Pressable>
+        {e.whatsapp && (
+          <Pressable onPress={() => abrirWhatsApp(e.whatsapp!, mensagemContato(e))} style={[estilos.acao, { backgroundColor: cores.whatsapp }]}>
+            <Text style={estilos.acaoEmoji}>💬</Text>
+            <Text style={estilos.acaoTexto}>WhatsApp</Text>
+          </Pressable>
+        )}
+        {telefone && (
+          <Pressable
+            onPress={() => ligar(telefone)}
+            style={[estilos.acao, { backgroundColor: e.emergencia ? '#DC2626' : cores.primaria }]}>
+            <Text style={estilos.acaoEmoji}>📞</Text>
+            <Text style={estilos.acaoTexto}>{e.emergencia ? `Ligar ${telefone}` : 'Ligar'}</Text>
+          </Pressable>
+        )}
+        {temEndereco && (
+          <Pressable onPress={() => abrirMapa(e.endereco)} style={[estilos.acao, { backgroundColor: cores.marinho }]}>
+            <Text style={estilos.acaoEmoji}>🗺️</Text>
+            <Text style={estilos.acaoTexto}>Mapa</Text>
+          </Pressable>
+        )}
       </View>
 
       {e.lojaId && (
@@ -58,14 +68,16 @@ export default function TelaEmpresa() {
       <View style={estilos.infos}>
         <Linha emoji="📍" titulo="Endereço" valor={e.endereco} />
         <Linha emoji="🕒" titulo="Horário" valor={e.horario} />
-        <Linha emoji="📱" titulo="WhatsApp" valor={formatarTelefone(e.whatsapp)} />
+        {e.whatsapp && <Linha emoji="📱" titulo="WhatsApp" valor={formatarTelefone(e.whatsapp)} />}
         {e.telefone && e.telefone !== e.whatsapp && <Linha emoji="☎️" titulo="Telefone" valor={formatarTelefone(e.telefone)} />}
         {e.instagram && (
           <Pressable onPress={() => Linking.openURL(`https://instagram.com/${e.instagram}`)}>
             <Linha emoji="📸" titulo="Instagram" valor={`@${e.instagram}`} />
           </Pressable>
         )}
-        <Linha emoji="🚚" titulo="Entrega" valor={e.fazEntrega ? 'Faz entrega' : 'Não informado'} />
+        {(e.tipo === 'varejo' || e.tipo === 'atacado') && (
+          <Linha emoji="🚚" titulo="Entrega" valor={e.fazEntrega ? 'Faz entrega' : 'Não informado'} />
+        )}
       </View>
 
       <Pressable

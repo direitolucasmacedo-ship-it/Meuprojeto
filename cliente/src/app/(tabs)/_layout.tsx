@@ -18,7 +18,7 @@ export default function TabsLayout() {
         headerShown: false,
       }}>
       <Tabs.Screen name="index" options={{ title: 'Início', tabBarIcon: icone('🏠') }} />
-      <Tabs.Screen name="empresas" options={{ title: 'Empresas', tabBarIcon: icone('🏢') }} />
+      <Tabs.Screen name="empresas" options={{ title: 'Guia', tabBarIcon: icone('📒') }} />
       <Tabs.Screen name="pedidos" options={{ title: 'Pedidos', tabBarIcon: icone('🧾') }} />
       <Tabs.Screen name="perfil" options={{ title: 'Perfil', tabBarIcon: icone('👤') }} />
     </Tabs>

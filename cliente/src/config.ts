@@ -6,7 +6,7 @@
 //
 // ATENÇÃO: os números abaixo são FICTÍCIOS. Troque pelos números reais.
 
-// Central do Capelinha Delivery (suporte e pedidos de lojas sem número próprio)
+// Central do Capelinha Conectada (suporte e pedidos de lojas sem número próprio)
 export const WHATSAPP_CENTRAL = '5533900000000';
 
 // Motoboy / mototáxi / motorista que recebe as corridas e entregas

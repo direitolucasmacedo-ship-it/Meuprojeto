@@ -60,7 +60,7 @@ export default function Inicio() {
             </Text>
           </View>
           <View style={estilos.marca}>
-            <Text style={{ color: '#fff', fontWeight: '900', fontSize: 15 }}>CD</Text>
+            <Text style={{ color: '#fff', fontWeight: '900', fontSize: 15 }}>CC</Text>
           </View>
         </View>
 
@@ -103,9 +103,9 @@ export default function Inicio() {
             {({ pressed }) => (
               <>
                 <View style={[estilos.servicoIcone, { backgroundColor: cores.primariaClara }, pressed && { opacity: 0.6 }]}>
-                  <Text style={{ fontSize: 28 }}>🏢</Text>
+                  <Text style={{ fontSize: 28 }}>📒</Text>
                 </View>
-                <Text style={estilos.servicoNome}>Empresas</Text>
+                <Text style={estilos.servicoNome}>Guia</Text>
               </>
             )}
           </Pressable>
@@ -132,13 +132,13 @@ export default function Inicio() {
         {/* Guia de empresas */}
         <View style={{ marginTop: 26, gap: 12 }}>
           <View style={estilos.secaoLinha}>
-            <TituloSecao>Empresas de Capelinha</TituloSecao>
+            <TituloSecao>Guia de Capelinha</TituloSecao>
             <Pressable onPress={() => router.navigate('/empresas')} hitSlop={8} style={{ paddingRight: 16 }}>
               <Text style={{ color: cores.primaria, fontWeight: '700', fontSize: 13 }}>Ver todas</Text>
             </Pressable>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, gap: 10 }}>
-            {EMPRESAS.slice(0, 6).map((e) => (
+            {EMPRESAS.filter((e) => e.tipo !== 'publico').slice(0, 8).map((e) => (
               <Pressable
                 key={e.id}
                 onPress={() => router.push({ pathname: '/empresa/[id]', params: { id: e.id } })}

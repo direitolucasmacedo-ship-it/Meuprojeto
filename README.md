@@ -1,12 +1,13 @@
-# Capelinha Delivery
+# Capelinha Conectada
 
 **Conectar pessoas em Capelinha - MG**: cliente, mototaxista, entregador e empresas,
 tudo em um só app, simples e rápido.
 
 1. 🏍️ **Mototáxi em 1 toque**: um botão, o app pega sua localização e encontra o mototaxista mais próximo.
 2. 🛍️ **Delivery**: restaurantes, mercado, farmácia, bebidas, pet shop, entregas.
-3. 🏢 **Guia de empresas**: atacado, varejo e serviços da cidade, com contato direto
-   (WhatsApp, ligar, ver no mapa).
+3. 📒 **Guia de Capelinha**: empresas (varejo, atacado, serviços), **profissionais autônomos**
+   e **utilidade pública** (emergência 190/192/193/199, Cemig, Copasa, prefeitura...),
+   com contato direto (WhatsApp, ligar, ver no mapa).
 4. 🚀 **Cadastre-se / Fale conosco**: empresas, autônomos e mototaxistas escolhem a
    categoria e preenchem os dados. A **ficha chega pronta no WhatsApp** (ou e-mail) do dono do app.
 
@@ -21,13 +22,13 @@ tudo em um só app, simples e rápido.
 |---|---|---|
 | ![](docs/telas/1-inicio.png) | ![](docs/telas/2-mototaxi.png) | ![](docs/telas/3-mototaxi-buscando.png) |
 
-| Mototaxista encontrado | Guia de empresas | Empresa |
+| Mototaxista encontrado | Guia de Capelinha | Empresa |
 |---|---|---|
 | ![](docs/telas/4-mototaxi-encontrado.png) | ![](docs/telas/5-empresas.png) | ![](docs/telas/6-empresa.png) |
 
-| Cadastre-se | Formulário |
-|---|---|
-| ![](docs/telas/7-cadastro.png) | ![](docs/telas/8-cadastro-formulario.png) |
+| Profissionais | Utilidade pública | Cadastre-se | Formulário |
+|---|---|---|---|
+| ![](docs/telas/9-profissionais.png) | ![](docs/telas/10-utilidade-publica.png) | ![](docs/telas/7-cadastro.png) | ![](docs/telas/8-cadastro-formulario.png) |
 
 ## ⚙️ Antes de usar de verdade
 
@@ -36,10 +37,12 @@ tudo em um só app, simples e rápido.
 | Números de WhatsApp da central, corridas e cadastros + e-mail dos cadastros | `cliente/src/config.ts` |
 | Categorias do formulário de cadastro | `cliente/src/data/cadastro.ts` |
 | Mototaxistas (nome, moto, placa, WhatsApp) | `cliente/src/data/mototaxi.ts` |
-| Empresas do guia (atacado, varejo, serviços) | `cliente/src/data/empresas.ts` |
+| Guia: empresas, profissionais e utilidade pública | `cliente/src/data/empresas.ts` |
 | Lojas do delivery, produtos e tarifas de corrida | `cliente/src/data/mock.ts` |
 
-Todos os números e o e-mail que estão lá hoje são **fictícios**.
+Todos os números e o e-mail que estão lá hoje são **fictícios**, exceto os de emergência
+(190, 192, 193, 199) e Cemig (116) / Copasa (115), que são os oficiais. Prefeitura, hospital
+e rodoviária precisam receber os números reais de Capelinha.
 
 ## Como testar no seu celular
 
@@ -63,7 +66,7 @@ Para ver no navegador do computador: `npx expo start --web`.
 cliente/                   App do cliente (React Native + Expo)
   src/app/                 Telas (cada arquivo é uma tela)
     (tabs)/index.tsx       Início: mototáxi, serviços, banners, empresas, lojas
-    (tabs)/empresas.tsx    Guia de empresas (filtro varejo/atacado/serviços)
+    (tabs)/empresas.tsx    Guia de Capelinha (empresas, profissionais, utilidade pública)
     (tabs)/pedidos.tsx     Meus pedidos e corridas
     (tabs)/perfil.tsx      Perfil e "Trabalhe com a gente"
     mototaxi.tsx           Mototáxi em 1 toque (busca animada + GPS)

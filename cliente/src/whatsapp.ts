@@ -13,10 +13,10 @@ export async function abrirWhatsApp(numero: string, mensagem = '') {
   }
 }
 
-// Abre o discador do celular com o número (formato 55 + DDD + número)
+// Abre o discador do celular com o número (55 + DDD + número, ou curto como '192')
 export async function ligar(numero: string) {
   try {
-    await Linking.openURL(`tel:+${numero}`);
+    await Linking.openURL(numero.length <= 5 ? `tel:${numero}` : `tel:+${numero}`);
   } catch {
     // em computadores sem discador, não faz nada
   }
@@ -30,6 +30,7 @@ export async function abrirMapa(endereco: string) {
 
 // (33) 99999-1234 a partir de 5533999991234
 export function formatarTelefone(numero: string) {
+  if (numero.length <= 5) return numero; // números curtos: 190, 192, 116...
   const n = numero.replace(/^55/, '');
   const ddd = n.slice(0, 2);
   const resto = n.slice(2);

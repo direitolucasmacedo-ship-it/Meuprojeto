@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Capelinha Delivery",
-    "slug": "capelinha-delivery",
+    "name": "Capelinha Conectada",
+    "slug": "capelinha-conectada",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "capelinhadelivery",
+    "scheme": "capelinhaconectada",
     "userInterfaceStyle": "light",
     "ios": {
       "icon": "./assets/expo.icon"
@@ -36,7 +36,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "O Capelinha Delivery usa sua localização para o mototaxista te encontrar."
+          "locationWhenInUsePermission": "O Capelinha Conectada usa sua localização para o mototaxista te encontrar."
         }
       ]
     ],

@@ -16,5 +16,5 @@ export const cores = {
   estrela: '#F5A524',
 };
 
-export const NOME_APP = 'Capelinha Delivery';
+export const NOME_APP = 'Capelinha Conectada';
 export const CIDADE = 'Capelinha - MG';

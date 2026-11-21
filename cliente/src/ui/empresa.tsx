@@ -2,13 +2,21 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { Empresa } from '@/data/empresas';
-import { cores } from '@/ui/theme';
-import { abrirWhatsApp } from '@/whatsapp';
+import { NOME_APP, cores } from '@/ui/theme';
+import { abrirWhatsApp, ligar } from '@/whatsapp';
 
-export const NOME_TIPO = { varejo: 'Varejo', atacado: 'Atacado', servicos: 'Serviços' } as const;
+export const NOME_TIPO = {
+  varejo: 'Varejo',
+  atacado: 'Atacado',
+  servicos: 'Serviços',
+  profissional: 'Profissional',
+  publico: 'Utilidade pública',
+} as const;
+
+const COR_EMERGENCIA = '#DC2626';
 
 export function mensagemContato(e: Empresa) {
-  return `Olá, ${e.nome}! Encontrei vocês pelo Capelinha Delivery.`;
+  return `Olá, ${e.nome}! Encontrei vocês pelo ${NOME_APP}.`;
 }
 
 export function CartaoEmpresa({ empresa }: { empresa: Empresa }) {
@@ -30,19 +38,39 @@ export function CartaoEmpresa({ empresa }: { empresa: Empresa }) {
           {empresa.ramo}
         </Text>
         <View style={{ flexDirection: 'row', gap: 6, marginTop: 4 }}>
-          <Text style={[estilos.selo, empresa.tipo === 'atacado' && estilos.seloAtacado]}>{NOME_TIPO[empresa.tipo]}</Text>
+          <Text
+            style={[
+              estilos.selo,
+              empresa.tipo === 'atacado' && estilos.seloAtacado,
+              empresa.tipo === 'profissional' && estilos.seloProfissional,
+              empresa.tipo === 'publico' && estilos.seloPublico,
+            ]}>
+            {empresa.emergencia ? 'Emergência • 24h' : NOME_TIPO[empresa.tipo]}
+          </Text>
           {empresa.fazEntrega && <Text style={[estilos.selo, estilos.seloEntrega]}>Entrega</Text>}
         </View>
       </View>
-      <Pressable
-        onPress={(ev) => {
-          ev.stopPropagation?.();
-          abrirWhatsApp(empresa.whatsapp, mensagemContato(empresa));
-        }}
-        hitSlop={8}
-        style={estilos.whats}>
-        <Text style={{ color: '#fff', fontWeight: '800', fontSize: 12 }}>WhatsApp</Text>
-      </Pressable>
+      {empresa.whatsapp ? (
+        <Pressable
+          onPress={(ev) => {
+            ev.stopPropagation?.();
+            abrirWhatsApp(empresa.whatsapp!, mensagemContato(empresa));
+          }}
+          hitSlop={8}
+          style={estilos.botao}>
+          <Text style={estilos.botaoTexto}>WhatsApp</Text>
+        </Pressable>
+      ) : empresa.telefone ? (
+        <Pressable
+          onPress={(ev) => {
+            ev.stopPropagation?.();
+            ligar(empresa.telefone!);
+          }}
+          hitSlop={8}
+          style={[estilos.botao, { backgroundColor: empresa.emergencia ? COR_EMERGENCIA : cores.primaria }]}>
+          <Text style={estilos.botaoTexto}>📞 {empresa.emergencia ? empresa.telefone : 'Ligar'}</Text>
+        </Pressable>
+      ) : null}
     </Pressable>
   );
 }
@@ -79,5 +107,8 @@ const estilos = StyleSheet.create({
   },
   seloAtacado: { color: '#7A4B00', backgroundColor: '#FFF3D1' },
   seloEntrega: { color: cores.sucesso, backgroundColor: '#E8F7EE' },
-  whats: { backgroundColor: cores.whatsapp, borderRadius: 18, paddingHorizontal: 12, paddingVertical: 8 },
+  seloProfissional: { color: '#6D28D9', backgroundColor: '#F1EAFF' },
+  seloPublico: { color: '#B91C1C', backgroundColor: '#FDECEC' },
+  botao: { backgroundColor: cores.whatsapp, borderRadius: 18, paddingHorizontal: 12, paddingVertical: 8 },
+  botaoTexto: { color: '#fff', fontWeight: '800', fontSize: 12 },
 });
