@@ -18,8 +18,11 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: cores.fundo },
         }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="mototaxi" options={{ headerShown: false }} />
+        <Stack.Screen name="busca" options={{ title: 'Buscar' }} />
         <Stack.Screen name="categoria/[id]" options={{ title: '' }} />
         <Stack.Screen name="loja/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="empresa/[id]" options={{ title: '' }} />
         <Stack.Screen name="sacola" options={{ title: 'Sacola' }} />
         <Stack.Screen name="corrida" options={{ title: 'Pedir corrida' }} />
       </Stack>

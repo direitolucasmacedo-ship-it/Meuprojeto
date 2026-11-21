@@ -62,7 +62,7 @@ export default function Perfil() {
         <Lista opcoes={PARCEIROS} />
 
         <Text style={{ textAlign: 'center', color: cores.textoSuave, fontSize: 12, marginTop: 24 }}>
-          {NOME_APP} • versão 0.2 (protótipo)
+          {NOME_APP} • versão 0.3 (protótipo)
         </Text>
       </ScrollView>
     </SafeAreaView>

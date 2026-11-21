@@ -1,12 +1,38 @@
 import { Linking } from 'react-native';
 
+import { CIDADE } from '@/ui/theme';
+
 // Abre o WhatsApp com a mensagem já escrita para o número informado.
-export async function abrirWhatsApp(numero: string, mensagem: string) {
-  const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+export async function abrirWhatsApp(numero: string, mensagem = '') {
+  const url = `https://wa.me/${numero}${mensagem ? `?text=${encodeURIComponent(mensagem)}` : ''}`;
   try {
     await Linking.openURL(url);
     return true;
   } catch {
     return false;
   }
+}
+
+// Abre o discador do celular com o número (formato 55 + DDD + número)
+export async function ligar(numero: string) {
+  try {
+    await Linking.openURL(`tel:+${numero}`);
+  } catch {
+    // em computadores sem discador, não faz nada
+  }
+}
+
+// Abre o endereço no app de mapas
+export async function abrirMapa(endereco: string) {
+  const busca = encodeURIComponent(`${endereco}, ${CIDADE}`);
+  await Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${busca}`);
+}
+
+// (33) 99999-1234 a partir de 5533999991234
+export function formatarTelefone(numero: string) {
+  const n = numero.replace(/^55/, '');
+  const ddd = n.slice(0, 2);
+  const resto = n.slice(2);
+  const meio = resto.length === 9 ? 5 : 4;
+  return `(${ddd}) ${resto.slice(0, meio)}-${resto.slice(meio)}`;
 }

@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { EMPRESAS } from '@/data/empresas';
 import { formatarPreco, LOJAS } from '@/data/mock';
 import { abrirLoja, BarraSacola, CartaoLoja } from '@/ui/componentes';
+import { CartaoEmpresa } from '@/ui/empresa';
 import { cores } from '@/ui/theme';
 
-const SUGESTOES = ['Marmitex', 'Pizza', 'Hambúrguer', 'Remédio', 'Gás', 'Ração', 'Pão de queijo'];
+const SUGESTOES = ['Marmitex', 'Pizza', 'Remédio', 'Gás', 'Ração', 'Cimento', 'Celular', 'Mecânico'];
 
 function normalizar(t: string) {
   return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -22,15 +23,19 @@ export default function Busca() {
         l.produtos.filter((p) => normalizar(p.nome + ' ' + p.descricao).includes(termo)).map((p) => ({ loja: l, produto: p })),
       )
     : [];
+  const empresas = termo
+    ? EMPRESAS.filter((e) => normalizar(`${e.nome} ${e.ramo} ${e.descricao}`).includes(termo))
+    : [];
+  const total = lojas.length + itens.length + empresas.length;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: cores.fundo }} edges={['top']}>
+    <View style={{ flex: 1, backgroundColor: cores.fundo }}>
       <View style={estilos.campoCaixa}>
         <Text style={{ fontSize: 16 }}>🔍</Text>
         <TextInput
           value={busca}
           onChangeText={setBusca}
-          placeholder="Buscar item ou loja"
+          placeholder="Comida, remédio, empresa, serviço..."
           placeholderTextColor={cores.textoSuave}
           style={estilos.campo}
           autoFocus
@@ -43,7 +48,7 @@ export default function Busca() {
         )}
       </View>
 
-      <ScrollView contentContainerStyle={{ paddingBottom: 90 }} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={{ paddingBottom: 100 }} keyboardShouldPersistTaps="handled">
         {!termo && (
           <View style={{ padding: 16, gap: 12 }}>
             <Text style={estilos.secao}>Buscas populares</Text>
@@ -57,15 +62,13 @@ export default function Busca() {
           </View>
         )}
 
-        {termo.length > 0 && lojas.length + itens.length === 0 && (
-          <Text style={{ color: cores.textoSuave, textAlign: 'center', marginTop: 40 }}>
-            Nada encontrado para “{busca}”.
-          </Text>
+        {termo.length > 0 && total === 0 && (
+          <Text style={{ color: cores.textoSuave, textAlign: 'center', marginTop: 40 }}>Nada encontrado para “{busca}”.</Text>
         )}
 
         {lojas.length > 0 && (
           <View style={{ marginTop: 8 }}>
-            <Text style={[estilos.secao, { paddingHorizontal: 16 }]}>Lojas</Text>
+            <Text style={[estilos.secao, { paddingHorizontal: 16 }]}>Delivery</Text>
             {lojas.map((l) => (
               <CartaoLoja key={l.id} loja={l} />
             ))}
@@ -74,7 +77,7 @@ export default function Busca() {
 
         {itens.length > 0 && (
           <View style={{ marginTop: 8 }}>
-            <Text style={[estilos.secao, { paddingHorizontal: 16, marginBottom: 4 }]}>Itens</Text>
+            <Text style={[estilos.secao, { paddingHorizontal: 16, marginBottom: 4 }]}>Produtos</Text>
             {itens.map(({ loja, produto }) => (
               <Pressable
                 key={loja.id + produto.id}
@@ -92,9 +95,18 @@ export default function Busca() {
             ))}
           </View>
         )}
+
+        {empresas.length > 0 && (
+          <View style={{ marginTop: 8 }}>
+            <Text style={[estilos.secao, { paddingHorizontal: 16 }]}>Empresas</Text>
+            {empresas.map((e) => (
+              <CartaoEmpresa key={e.id} empresa={e} />
+            ))}
+          </View>
+        )}
       </ScrollView>
-      <BarraSacola acimaDasAbas />
-    </SafeAreaView>
+      <BarraSacola />
+    </View>
   );
 }
 
@@ -106,7 +118,7 @@ const estilos = StyleSheet.create({
     margin: 16,
     marginBottom: 4,
     backgroundColor: cores.fundoSuave,
-    borderRadius: 8,
+    borderRadius: 12,
     paddingHorizontal: 14,
   },
   campo: { flex: 1, paddingVertical: 12, fontSize: 15, color: cores.textoForte },
@@ -124,7 +136,7 @@ const estilos = StyleSheet.create({
   itemFoto: {
     width: 72,
     height: 72,
-    borderRadius: 8,
+    borderRadius: 12,
     backgroundColor: cores.fundoSuave,
     alignItems: 'center',
     justifyContent: 'center',

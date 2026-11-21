@@ -3,12 +3,16 @@ import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useApp } from '@/context/app-state';
+import { EMPRESAS } from '@/data/empresas';
 import { BANNERS, CATEGORIAS, LOJAS, type Banner, type Categoria } from '@/data/mock';
+import { MOTOTAXISTAS } from '@/data/mototaxi';
 import { abrirLoja, BarraSacola, CartaoLoja, TituloSecao } from '@/ui/componentes';
 import { CIDADE, cores } from '@/ui/theme';
 
 function abrirCategoria(c: Categoria) {
-  if (c.tipo === 'corrida') router.push({ pathname: '/corrida', params: { tipo: c.id } });
+  if (c.id === 'moto') router.push('/mototaxi');
+  else if (c.tipo === 'corrida') router.push({ pathname: '/corrida', params: { tipo: c.id } });
   else router.push({ pathname: '/categoria/[id]', params: { id: c.id } });
 }
 
@@ -26,53 +30,88 @@ const FILTROS = [
 ] as const;
 type FiltroId = (typeof FILTROS)[number]['id'];
 
+// Serviços da grade (o mototáxi tem destaque próprio no topo)
+const SERVICOS = CATEGORIAS.filter((c) => c.id !== 'moto');
+
 export default function Inicio() {
+  const { cliente } = useApp();
   const { width } = useWindowDimensions();
-  const larguraBanner = Math.min(width, 600) - 48;
+  const larguraBanner = Math.min(width, 600) - 64;
   const [filtro, setFiltro] = useState<FiltroId | null>(null);
+  const disponiveis = MOTOTAXISTAS.filter((m) => m.disponivel).length;
 
   let lojas = [...LOJAS];
   if (filtro === 'gratis') lojas = lojas.filter((l) => l.taxaEntrega === 0);
   if (filtro === 'avaliados') lojas.sort((a, b) => b.avaliacao - a.avaliacao);
   if (filtro === 'perto') lojas.sort((a, b) => a.distanciaKm - b.distanciaKm);
-  lojas.sort((a, b) => Number(b.aberta) - Number(a.aberta)); // abertas primeiro
+  lojas.sort((a, b) => Number(b.aberta) - Number(a.aberta));
 
-  const famosas = LOJAS.filter((l) => l.aberta).sort((a, b) => b.avaliacao - a.avaliacao);
+  const primeiroNome = cliente.nome.split(' ')[0];
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: cores.fundo }} edges={['top']}>
       <ScrollView contentContainerStyle={{ paddingBottom: 90 }} showsVerticalScrollIndicator={false}>
-        {/* Endereço */}
+        {/* Saudação */}
         <View style={estilos.topo}>
-          <Text style={estilos.enderecoRotulo}>ENTREGAR EM</Text>
-          <Text style={estilos.endereco}>
-            {CIDADE} <Text style={{ color: cores.primaria }}>▾</Text>
-          </Text>
+          <View style={{ flex: 1 }}>
+            <Text style={estilos.ola}>{primeiroNome ? `Olá, ${primeiroNome}! 👋` : 'Olá! 👋'}</Text>
+            <Text style={estilos.cidade}>
+              📍 {CIDADE} <Text style={{ color: cores.primaria }}>▾</Text>
+            </Text>
+          </View>
+          <View style={estilos.marca}>
+            <Text style={{ color: '#fff', fontWeight: '900', fontSize: 15 }}>CD</Text>
+          </View>
         </View>
 
-        {/* Busca (leva para a aba Busca) */}
-        <Pressable onPress={() => router.navigate('/busca')} style={estilos.busca}>
+        {/* Busca */}
+        <Pressable onPress={() => router.push('/busca')} style={estilos.busca}>
           <Text style={{ fontSize: 16 }}>🔍</Text>
-          <Text style={{ color: cores.textoSuave, fontSize: 15 }}>Buscar item ou loja</Text>
+          <Text style={{ color: cores.textoSuave, fontSize: 15 }}>Comida, remédio, empresa, serviço...</Text>
         </Pressable>
 
-        {/* Categorias */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={estilos.categorias}>
-          {CATEGORIAS.map((c) => (
-            <Pressable key={c.id} onPress={() => abrirCategoria(c)} style={estilos.categoria}>
+        {/* Destaque: mototáxi em 1 toque */}
+        <Pressable onPress={() => router.push('/mototaxi')} style={({ pressed }) => [estilos.moto, pressed && { opacity: 0.92 }]}>
+          <View style={{ flex: 1, gap: 4 }}>
+            <Text style={estilos.motoRotulo}>MOTOTÁXI</Text>
+            <Text style={estilos.motoTitulo}>Chegue rápido,{'\n'}em 1 toque</Text>
+            <Text style={estilos.motoSub}>🟢 {disponiveis} disponíveis agora</Text>
+          </View>
+          <View style={estilos.motoBotao}>
+            <Text style={{ fontSize: 34 }}>🏍️</Text>
+            <Text style={estilos.motoBotaoTexto}>CHAMAR</Text>
+          </View>
+        </Pressable>
+
+        {/* Serviços */}
+        <View style={estilos.grade}>
+          {SERVICOS.map((c) => (
+            <Pressable key={c.id} onPress={() => abrirCategoria(c)} style={estilos.servico}>
               {({ pressed }) => (
                 <>
-                  <View style={[estilos.categoriaIcone, { backgroundColor: c.cor }, pressed && { opacity: 0.6 }]}>
-                    <Text style={{ fontSize: 30 }}>{c.emoji}</Text>
+                  <View style={[estilos.servicoIcone, { backgroundColor: c.cor }, pressed && { opacity: 0.6 }]}>
+                    <Text style={{ fontSize: 28 }}>{c.emoji}</Text>
                   </View>
-                  <Text style={estilos.categoriaNome}>{c.nome}</Text>
+                  <Text style={estilos.servicoNome} numberOfLines={1}>
+                    {c.nome}
+                  </Text>
                 </>
               )}
             </Pressable>
           ))}
-        </ScrollView>
+          <Pressable onPress={() => router.navigate('/empresas')} style={estilos.servico}>
+            {({ pressed }) => (
+              <>
+                <View style={[estilos.servicoIcone, { backgroundColor: cores.primariaClara }, pressed && { opacity: 0.6 }]}>
+                  <Text style={{ fontSize: 28 }}>🏢</Text>
+                </View>
+                <Text style={estilos.servicoNome}>Empresas</Text>
+              </>
+            )}
+          </Pressable>
+        </View>
 
-        {/* Banners de promoção */}
+        {/* Banners */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -80,42 +119,45 @@ export default function Inicio() {
           decelerationRate="fast"
           contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}>
           {BANNERS.map((b) => (
-            <Pressable
-              key={b.id}
-              onPress={() => abrirBanner(b)}
-              style={[estilos.banner, { width: larguraBanner, backgroundColor: b.cor }]}>
+            <Pressable key={b.id} onPress={() => abrirBanner(b)} style={[estilos.banner, { width: larguraBanner, backgroundColor: b.cor }]}>
               <View style={{ flex: 1 }}>
                 <Text style={estilos.bannerTitulo}>{b.titulo}</Text>
                 <Text style={estilos.bannerSub}>{b.subtitulo}</Text>
-                <View style={estilos.bannerBotao}>
-                  <Text style={{ color: b.cor, fontWeight: '700', fontSize: 12 }}>Aproveitar</Text>
-                </View>
               </View>
-              <Text style={{ fontSize: 64 }}>{b.emoji}</Text>
+              <Text style={{ fontSize: 52 }}>{b.emoji}</Text>
             </Pressable>
           ))}
         </ScrollView>
 
-        {/* Famosos */}
-        <View style={{ marginTop: 24, gap: 12 }}>
-          <TituloSecao>Famosos no Capelinha Delivery</TituloSecao>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, gap: 14 }}>
-            {famosas.map((l) => (
-              <Pressable key={l.id} onPress={() => abrirLoja(l.id)} style={{ width: 76, alignItems: 'center', gap: 6 }}>
-                <View style={estilos.famosoLogo}>
-                  <Text style={{ fontSize: 32 }}>{l.emoji}</Text>
-                </View>
-                <Text style={estilos.famosoNome} numberOfLines={2}>
-                  {l.nome}
+        {/* Guia de empresas */}
+        <View style={{ marginTop: 26, gap: 12 }}>
+          <View style={estilos.secaoLinha}>
+            <TituloSecao>Empresas de Capelinha</TituloSecao>
+            <Pressable onPress={() => router.navigate('/empresas')} hitSlop={8} style={{ paddingRight: 16 }}>
+              <Text style={{ color: cores.primaria, fontWeight: '700', fontSize: 13 }}>Ver todas</Text>
+            </Pressable>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, gap: 10 }}>
+            {EMPRESAS.slice(0, 6).map((e) => (
+              <Pressable
+                key={e.id}
+                onPress={() => router.push({ pathname: '/empresa/[id]', params: { id: e.id } })}
+                style={estilos.empresa}>
+                <Text style={{ fontSize: 28 }}>{e.emoji}</Text>
+                <Text style={estilos.empresaNome} numberOfLines={2}>
+                  {e.nome}
+                </Text>
+                <Text style={estilos.empresaRamo} numberOfLines={1}>
+                  {e.ramo}
                 </Text>
               </Pressable>
             ))}
           </ScrollView>
         </View>
 
-        {/* Lista de lojas */}
-        <View style={{ marginTop: 24, gap: 12 }}>
-          <TituloSecao>Lojas</TituloSecao>
+        {/* Lojas do delivery */}
+        <View style={{ marginTop: 26, gap: 12 }}>
+          <TituloSecao>Peça agora</TituloSecao>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}>
             {FILTROS.map((f) => {
               const ativo = filtro === f.id;
@@ -133,9 +175,6 @@ export default function Inicio() {
             {lojas.map((l) => (
               <CartaoLoja key={l.id} loja={l} />
             ))}
-            {lojas.length === 0 && (
-              <Text style={{ color: cores.textoSuave, paddingHorizontal: 16 }}>Nenhuma loja com esse filtro.</Text>
-            )}
           </View>
         </View>
       </ScrollView>
@@ -145,64 +184,76 @@ export default function Inicio() {
 }
 
 const estilos = StyleSheet.create({
-  topo: { alignItems: 'center', paddingTop: 8, paddingBottom: 12 },
-  enderecoRotulo: { fontSize: 10, fontWeight: '700', color: cores.textoSuave, letterSpacing: 0.5 },
-  endereco: { fontSize: 15, fontWeight: '700', color: cores.textoForte, marginTop: 2 },
+  topo: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 8, paddingBottom: 14 },
+  ola: { fontSize: 22, fontWeight: '800', color: cores.textoForte },
+  cidade: { fontSize: 14, color: cores.textoSuave, marginTop: 2 },
+  marca: {
+    width: 42,
+    height: 42,
+    borderRadius: 14,
+    backgroundColor: cores.primaria,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   busca: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
     marginHorizontal: 16,
     backgroundColor: cores.fundoSuave,
-    borderRadius: 8,
+    borderRadius: 14,
     paddingHorizontal: 14,
-    paddingVertical: 12,
+    paddingVertical: 13,
   },
-  categorias: { paddingHorizontal: 12, paddingVertical: 18, gap: 4 },
-  categoria: { width: 78, alignItems: 'center', gap: 6 },
-  categoriaIcone: {
-    width: 64,
-    height: 64,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  categoriaNome: { fontSize: 12, color: cores.texto, textAlign: 'center' },
-  banner: {
-    height: 140,
-    borderRadius: 12,
-    padding: 18,
+  moto: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginHorizontal: 16,
+    marginTop: 16,
+    padding: 18,
+    borderRadius: 20,
+    backgroundColor: cores.marinho,
     overflow: 'hidden',
   },
-  bannerTitulo: { color: '#fff', fontSize: 22, fontWeight: '800' },
-  bannerSub: { color: '#fff', fontSize: 14, marginTop: 2, opacity: 0.95 },
-  bannerBotao: {
-    backgroundColor: '#fff',
-    alignSelf: 'flex-start',
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    marginTop: 12,
-  },
-  famosoLogo: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
-    backgroundColor: cores.fundoSuave,
-    borderWidth: 1,
-    borderColor: cores.borda,
+  motoRotulo: { color: cores.destaque, fontSize: 11, fontWeight: '800', letterSpacing: 1.5 },
+  motoTitulo: { color: '#fff', fontSize: 21, fontWeight: '800', lineHeight: 26 },
+  motoSub: { color: '#C9D6F2', fontSize: 13, marginTop: 4 },
+  motoBotao: {
+    width: 104,
+    height: 104,
+    borderRadius: 52,
+    backgroundColor: cores.destaque,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 6,
+    borderColor: 'rgba(255,198,41,0.35)',
   },
-  famosoNome: { fontSize: 11, color: cores.texto, textAlign: 'center' },
-  chip: {
+  motoBotaoTexto: { color: cores.marinho, fontWeight: '900', fontSize: 13, letterSpacing: 1 },
+  grade: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    rowGap: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
+  },
+  servico: { width: '23%', alignItems: 'center', gap: 6 },
+  servicoIcone: { width: '100%', aspectRatio: 1, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
+  servicoNome: { fontSize: 12, color: cores.texto, fontWeight: '600' },
+  banner: { height: 110, borderRadius: 18, padding: 18, flexDirection: 'row', alignItems: 'center', overflow: 'hidden' },
+  bannerTitulo: { color: '#fff', fontSize: 20, fontWeight: '800' },
+  bannerSub: { color: '#fff', fontSize: 14, marginTop: 2, opacity: 0.9 },
+  secaoLinha: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  empresa: {
+    width: 130,
+    padding: 12,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: cores.borda,
-    borderRadius: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 7,
+    gap: 4,
   },
-  chipTexto: { fontSize: 13, color: cores.texto },
+  empresaNome: { fontSize: 13, fontWeight: '700', color: cores.textoForte, minHeight: 34 },
+  empresaRamo: { fontSize: 11, color: cores.textoSuave },
+  chip: { borderWidth: 1, borderColor: cores.borda, borderRadius: 18, paddingHorizontal: 14, paddingVertical: 7 },
+  chipTexto: { fontSize: 13, color: cores.texto, fontWeight: '600' },
 });

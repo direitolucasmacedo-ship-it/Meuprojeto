@@ -1,30 +1,38 @@
 # Capelinha Delivery
 
-Super app de delivery e transporte para **Capelinha - MG**: restaurantes, mercado, farmácia,
-bebidas, pet shop, corrida de carro, mototáxi e entregas rápidas.
+**Conectar pessoas em Capelinha - MG**: cliente, mototaxista, entregador e empresas,
+tudo em um só app, simples e rápido.
 
-> **Situação atual:** protótipo do **App do Cliente** com dados de exemplo.
-> Os pedidos e corridas são enviados **pelo WhatsApp** (mensagem pronta para a loja
-> ou para o motoboy). As lojas cadastradas são fictícias e a distância das
-> corridas é simulada.
+1. 🏍️ **Mototáxi em 1 toque**: um botão, o app pega sua localização e encontra o mototaxista mais próximo.
+2. 🛍️ **Delivery**: restaurantes, mercado, farmácia, bebidas, pet shop, entregas.
+3. 🏢 **Guia de empresas**: atacado, varejo e serviços da cidade, com contato direto
+   (WhatsApp, ligar, ver no mapa).
 
-## ⚙️ Antes de usar de verdade
-
-1. Abra `cliente/src/config.ts` e coloque os números de WhatsApp reais
-   (central e motoboy/corridas). Os que estão lá são fictícios.
-2. Em `cliente/src/data/mock.ts`, troque as lojas de exemplo pelas lojas parceiras
-   (nome, produtos, preços, taxa de entrega e, se a loja quiser receber direto,
-   o campo `whatsapp` dela). Ali também ficam as tarifas de mototáxi, carro e entrega.
+> **Situação atual: protótipo do App do Cliente.**
+> Pedidos, corridas e contatos são enviados **pelo WhatsApp**. As lojas, empresas e
+> mototaxistas cadastrados são **fictícios**, e a escolha do mototaxista "mais próximo"
+> é **simulada** (a versão real precisa do app do mototaxista + servidor).
 
 ## Telas
 
-| Início | Loja | Sacola |
+| Início | Mototáxi | Buscando |
 |---|---|---|
-| ![](docs/telas/1-inicio.png) | ![](docs/telas/2-loja.png) | ![](docs/telas/3-sacola.png) |
+| ![](docs/telas/1-inicio.png) | ![](docs/telas/2-mototaxi.png) | ![](docs/telas/3-mototaxi-buscando.png) |
 
-| Pedidos | Corrida | Busca |
+| Mototaxista encontrado | Guia de empresas | Empresa |
 |---|---|---|
-| ![](docs/telas/4-pedidos.png) | ![](docs/telas/5-corrida.png) | ![](docs/telas/6-busca.png) |
+| ![](docs/telas/4-mototaxi-encontrado.png) | ![](docs/telas/5-empresas.png) | ![](docs/telas/6-empresa.png) |
+
+## ⚙️ Antes de usar de verdade
+
+| O quê | Arquivo |
+|---|---|
+| Números de WhatsApp da central e de corridas | `cliente/src/config.ts` |
+| Mototaxistas (nome, moto, placa, WhatsApp) | `cliente/src/data/mototaxi.ts` |
+| Empresas do guia (atacado, varejo, serviços) | `cliente/src/data/empresas.ts` |
+| Lojas do delivery, produtos e tarifas de corrida | `cliente/src/data/mock.ts` |
+
+Todos os números que estão lá hoje são **fictícios**.
 
 ## Como testar no seu celular
 
@@ -37,7 +45,7 @@ Você precisa de um computador com [Node.js](https://nodejs.org) (versão LTS) i
    npm install
    npx expo start
    ```
-3. Vai aparecer um **QR code** no terminal. Leia com o Expo Go (Android) ou com a câmera (iPhone).
+3. Leia o **QR code** que aparece no terminal com o Expo Go (Android) ou com a câmera (iPhone).
    O celular e o computador precisam estar na mesma rede Wi-Fi.
 
 Para ver no navegador do computador: `npx expo start --web`.
@@ -45,27 +53,27 @@ Para ver no navegador do computador: `npx expo start --web`.
 ## Estrutura
 
 ```
-cliente/                 App do cliente (React Native + Expo)
-  src/app/               Telas (cada arquivo é uma tela)
-    (tabs)/index.tsx     Início: categorias, banners, famosos, lojas
-    (tabs)/busca.tsx     Busca de lojas e itens
-    (tabs)/pedidos.tsx   Meus pedidos (reabrir no WhatsApp)
-    (tabs)/perfil.tsx    Perfil e "Trabalhe com a gente"
-    categoria/[id].tsx   Lista de lojas de uma categoria
-    loja/[id].tsx        Cardápio/produtos da loja
-    sacola.tsx           Sacola, endereço, pagamento → WhatsApp
-    corrida.tsx          Pedir carro, mototáxi ou entrega
-  src/data/mock.ts       Lojas, produtos e tarifas de EXEMPLO
-  src/config.ts          Números de WhatsApp (PREENCHER)
-  src/context/           Estado da sacola, pedidos e dados do cliente
-  src/ui/                Cores, componentes reutilizáveis
+cliente/                   App do cliente (React Native + Expo)
+  src/app/                 Telas (cada arquivo é uma tela)
+    (tabs)/index.tsx       Início: mototáxi, serviços, banners, empresas, lojas
+    (tabs)/empresas.tsx    Guia de empresas (filtro varejo/atacado/serviços)
+    (tabs)/pedidos.tsx     Meus pedidos e corridas
+    (tabs)/perfil.tsx      Perfil e "Trabalhe com a gente"
+    mototaxi.tsx           Mototáxi em 1 toque (busca animada + GPS)
+    empresa/[id].tsx       Página da empresa (WhatsApp, ligar, mapa)
+    busca.tsx              Busca geral (lojas, produtos, empresas)
+    loja/[id].tsx          Produtos da loja
+    sacola.tsx             Sacola → pedido pelo WhatsApp
+    corrida.tsx            Carro e entregas
+  src/data/                Dados de EXEMPLO
+  src/config.ts            Números de WhatsApp (PREENCHER)
+  src/ui/                  Cores (tema azul) e componentes
 ```
 
 ## Próximas etapas
 
-1. **Protótipo do cliente** ✅ (visual estilo app de delivery + pedidos via WhatsApp)
-2. **Servidor (backend):** login por telefone/SMS, banco de dados, pedidos reais
-3. **App do entregador/motorista** e **painel das lojas**
-4. **Mapa e GPS:** distância real, acompanhar o motoboy em tempo real
-5. **Pagamento online** (Pix/cartão) e repasse para parceiros
-6. **Publicação** na Play Store e App Store
+1. **Protótipo do cliente** ✅
+2. **App do colaborador** (mototaxista/entregador): ficar "disponível", receber e aceitar corridas
+3. **Servidor**: login por celular, banco de dados, mototaxista mais próximo de verdade (GPS)
+4. **Painel das empresas e do administrador**: cadastrar empresas, produtos e preços
+5. **Pagamento online** (Pix) e **publicação** na Play Store e App Store

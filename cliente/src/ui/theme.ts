@@ -1,16 +1,19 @@
 export const cores = {
-  primaria: '#E3262F', // vermelho da marca
-  primariaEscura: '#B81E25',
-  primariaClara: '#FDECEC',
+  primaria: '#1463F3', // azul da marca
+  primariaEscura: '#0B4CC2',
+  primariaClara: '#EAF1FF',
+  marinho: '#0A2A66', // azul escuro para destaques (mototáxi)
+  destaque: '#FFC629', // amarelo de apoio (botões especiais, selos)
   fundo: '#FFFFFF',
-  fundoSuave: '#F5F5F5',
+  fundoSuave: '#F4F6FA',
   cartao: '#FFFFFF',
-  texto: '#3E3E3E',
-  textoForte: '#1A1A1A',
-  textoSuave: '#717171',
-  borda: '#EBEBEB',
-  sucesso: '#50A773',
-  estrela: '#E7A74E',
+  texto: '#3B4252',
+  textoForte: '#111827',
+  textoSuave: '#6B7280',
+  borda: '#E6E9F0',
+  sucesso: '#16A34A',
+  whatsapp: '#25D366',
+  estrela: '#F5A524',
 };
 
 export const NOME_APP = 'Capelinha Delivery';

@@ -208,9 +208,9 @@ export type Banner = {
 };
 
 export const BANNERS: Banner[] = [
-  { id: 'b1', titulo: 'Entrega grátis', subtitulo: 'no Sabor Mineiro hoje', emoji: '🍲', cor: '#E3262F', destino: { tipo: 'loja', id: 'sabor-mineiro' } },
-  { id: 'b2', titulo: 'Mototáxi rapidinho', subtitulo: 'chegue em minutos', emoji: '🏍️', cor: '#F39C12', destino: { tipo: 'corrida', id: 'moto' } },
-  { id: 'b3', titulo: 'Farmácia 24h', subtitulo: 'remédio sem sair de casa', emoji: '💊', cor: '#2E86DE', destino: { tipo: 'categoria', id: 'farmacia' } },
+  { id: 'b1', titulo: 'Entrega grátis', subtitulo: 'no Sabor Mineiro hoje', emoji: '🍲', cor: '#1463F3', destino: { tipo: 'loja', id: 'sabor-mineiro' } },
+  { id: 'b2', titulo: 'Farmácia rápida', subtitulo: 'remédio sem sair de casa', emoji: '💊', cor: '#0A2A66', destino: { tipo: 'categoria', id: 'farmacia' } },
+  { id: 'b3', titulo: 'Gás e água', subtitulo: 'entrega no mesmo dia', emoji: '🔥', cor: '#0E9F9A', destino: { tipo: 'loja', id: 'deposito-gelada' } },
 ];
 
 // Pontos de referência para as corridas (exemplos genéricos)
