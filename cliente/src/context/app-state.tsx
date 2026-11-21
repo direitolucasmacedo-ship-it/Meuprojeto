@@ -15,7 +15,11 @@ export type Pedido = {
   pagamento: FormaPagamento;
   status: string;
   criadoEm: Date;
+  whatsapp: string; // para quem o pedido foi enviado
+  mensagem: string; // texto enviado (permite reenviar)
 };
+
+export type DadosCliente = { nome: string; endereco: string };
 
 type Estado = {
   lojaDoCarrinho: string | null;
@@ -25,6 +29,8 @@ type Estado = {
   limparCarrinho: () => void;
   pedidos: Pedido[];
   registrarPedido: (p: Omit<Pedido, 'id' | 'criadoEm' | 'status'>) => void;
+  cliente: DadosCliente;
+  setCliente: (c: DadosCliente) => void;
 };
 
 const AppContext = createContext<Estado | null>(null);
@@ -33,9 +39,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [lojaDoCarrinho, setLoja] = useState<string | null>(null);
   const [itens, setItens] = useState<ItemCarrinho[]>([]);
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
+  const [cliente, setCliente] = useState<DadosCliente>({ nome: '', endereco: '' });
 
   function adicionar(lojaId: string, produto: Produto) {
-    // Um carrinho só pode ter itens de uma loja por vez (igual aos apps grandes)
+    // A sacola só pode ter itens de uma loja por vez (igual aos apps grandes)
     if (lojaDoCarrinho && lojaDoCarrinho !== lojaId) {
       setItens([{ produto, quantidade: 1 }]);
       setLoja(lojaId);
@@ -45,9 +52,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setItens((atual) => {
       const existe = atual.find((i) => i.produto.id === produto.id);
       if (existe) {
-        return atual.map((i) =>
-          i.produto.id === produto.id ? { ...i, quantidade: i.quantidade + 1 } : i,
-        );
+        return atual.map((i) => (i.produto.id === produto.id ? { ...i, quantidade: i.quantidade + 1 } : i));
       }
       return [...atual, { produto, quantidade: 1 }];
     });
@@ -70,14 +75,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   function registrarPedido(p: Omit<Pedido, 'id' | 'criadoEm' | 'status'>) {
     setPedidos((atual) => [
-      { ...p, id: String(Date.now()), criadoEm: new Date(), status: 'Aguardando confirmação' },
+      { ...p, id: String(Date.now()), criadoEm: new Date(), status: 'Enviado pelo WhatsApp' },
       ...atual,
     ]);
   }
 
   return (
     <AppContext.Provider
-      value={{ lojaDoCarrinho, itens, adicionar, remover, limparCarrinho, pedidos, registrarPedido }}>
+      value={{
+        lojaDoCarrinho,
+        itens,
+        adicionar,
+        remover,
+        limparCarrinho,
+        pedidos,
+        registrarPedido,
+        cliente,
+        setCliente,
+      }}>
       {children}
     </AppContext.Provider>
   );

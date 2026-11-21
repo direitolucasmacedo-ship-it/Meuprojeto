@@ -11,14 +11,16 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           headerTintColor: cores.primaria,
-          headerTitleStyle: { color: cores.texto },
+          headerTitleStyle: { color: cores.textoForte, fontSize: 16, fontWeight: '700' },
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
           headerBackTitle: 'Voltar',
           contentStyle: { backgroundColor: cores.fundo },
         }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="categoria/[id]" options={{ title: '' }} />
-        <Stack.Screen name="loja/[id]" options={{ title: '' }} />
-        <Stack.Screen name="carrinho" options={{ title: 'Seu carrinho' }} />
+        <Stack.Screen name="loja/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="sacola" options={{ title: 'Sacola' }} />
         <Stack.Screen name="corrida" options={{ title: 'Pedir corrida' }} />
       </Stack>
     </AppProvider>

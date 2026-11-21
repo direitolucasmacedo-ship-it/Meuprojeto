@@ -5,7 +5,7 @@ import { cores } from '@/ui/theme';
 
 function icone(emoji: string) {
   return function Icone({ focused }: { focused: boolean }) {
-    return <Text style={{ fontSize: 22, opacity: focused ? 1 : 0.5 }}>{emoji}</Text>;
+    return <Text style={{ fontSize: 21, opacity: focused ? 1 : 0.45 }}>{emoji}</Text>;
   };
 }
 
@@ -18,6 +18,7 @@ export default function TabsLayout() {
         headerShown: false,
       }}>
       <Tabs.Screen name="index" options={{ title: 'Início', tabBarIcon: icone('🏠') }} />
+      <Tabs.Screen name="busca" options={{ title: 'Busca', tabBarIcon: icone('🔍') }} />
       <Tabs.Screen name="pedidos" options={{ title: 'Pedidos', tabBarIcon: icone('🧾') }} />
       <Tabs.Screen name="perfil" options={{ title: 'Perfil', tabBarIcon: icone('👤') }} />
     </Tabs>

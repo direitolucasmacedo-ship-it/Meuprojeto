@@ -1,13 +1,17 @@
 export const cores = {
-  primaria: '#E4572E', // laranja-avermelhado (cor da marca, provisória)
-  primariaEscura: '#B8401F',
-  fundo: '#F7F7F8',
+  primaria: '#E3262F', // vermelho da marca
+  primariaEscura: '#B81E25',
+  primariaClara: '#FDECEC',
+  fundo: '#FFFFFF',
+  fundoSuave: '#F5F5F5',
   cartao: '#FFFFFF',
-  texto: '#1F1F24',
-  textoSuave: '#6B6B76',
-  borda: '#E6E6EA',
-  sucesso: '#2E9E5B',
+  texto: '#3E3E3E',
+  textoForte: '#1A1A1A',
+  textoSuave: '#717171',
+  borda: '#EBEBEB',
+  sucesso: '#50A773',
+  estrela: '#E7A74E',
 };
 
-export const NOME_APP = 'Capelinha Já'; // nome provisório
+export const NOME_APP = 'Capelinha Delivery';
 export const CIDADE = 'Capelinha - MG';
