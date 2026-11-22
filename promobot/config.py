@@ -19,6 +19,7 @@ class Config:
     affiliate_params: dict = field(default_factory=dict)
     require_affiliate: bool = True
     rss_feeds: list = field(default_factory=list)
+    offers_file: str = "ofertas.csv"
     dry_run: bool = True
     interval_seconds: int = 900
     max_posts_per_run: int = 5
@@ -35,6 +36,7 @@ class Config:
             affiliate_params=json.loads(env("AFFILIATE_PARAMS", "{}") or "{}"),
             require_affiliate=_bool(env("REQUIRE_AFFILIATE"), True),
             rss_feeds=[u.strip() for u in env("RSS_FEEDS", "").split(",") if u.strip()],
+            offers_file=env("OFFERS_FILE", "ofertas.csv"),
             dry_run=_bool(env("DRY_RUN"), True),
             interval_seconds=int(env("INTERVAL_SECONDS", "900")),
             max_posts_per_run=int(env("MAX_POSTS_PER_RUN", "5")),

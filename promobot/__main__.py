@@ -7,12 +7,14 @@ from .bot import PromoBot
 from .config import Config
 from .publishers.console import ConsolePublisher
 from .publishers.telegram import TelegramPublisher
+from .sources.csv_file import CSVSource
 from .sources.rss import RSSSource
 from .storage import Storage
 
 
 def build_bot(cfg: Config) -> PromoBot:
-    sources = [RSSSource(url) for url in cfg.rss_feeds]
+    sources = [CSVSource(cfg.offers_file)] if cfg.offers_file else []
+    sources += [RSSSource(url) for url in cfg.rss_feeds]
     if cfg.dry_run:
         publishers = [ConsolePublisher()]
     else:
@@ -34,8 +36,6 @@ def main() -> None:
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     cfg = Config.from_env()
-    if not cfg.rss_feeds:
-        logging.warning("Nenhuma fonte configurada (RSS_FEEDS vazio no .env).")
     bot = build_bot(cfg)
     logging.info("Iniciando (modo %s)", "SIMULAÇÃO" if cfg.dry_run else "PUBLICAÇÃO")
 

@@ -56,3 +56,13 @@ def test_bot_posts_only_affiliate_offers_once():
     assert bot.run_once() == 1
     assert pub.sent[0].affiliate_url.endswith("tag=meuid-20")
     assert bot.run_once() == 0  # não repete
+
+
+def test_csv_source(tmp_path):
+    from promobot.sources.csv_file import CSVSource, parse_price
+    f = tmp_path / "o.csv"
+    f.write_text("titulo;link;preco;preco_antigo;cupom;imagem\nX;https://www.amazon.com.br/dp/A;R$ 1.299,90;1500;CUPOM10;\n",
+                 encoding="utf-8")
+    [o] = CSVSource(str(f)).fetch()
+    assert (o.price, o.old_price, o.coupon) == (1299.90, 1500.0, "CUPOM10")
+    assert parse_price("279.00") == 279.0 and parse_price("") is None
