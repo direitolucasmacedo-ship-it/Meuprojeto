@@ -23,7 +23,8 @@ def build_bot(cfg: Config) -> PromoBot:
         sources=sources,
         publishers=publishers,
         linker=AffiliateLinker(cfg.amazon_tag, cfg.affiliate_params),
-        storage=Storage(cfg.db_path),
+        # no modo simulação o histórico fica só na memória, para não "gastar" ofertas
+        storage=Storage(":memory:" if cfg.dry_run else cfg.db_path),
         require_affiliate=cfg.require_affiliate,
         max_posts_per_run=cfg.max_posts_per_run,
     )
