@@ -1,11 +1,16 @@
 // Versões com foto real de salgados (foto-salgados.webp)
 const {chromium}=require('playwright');const fs=require('fs');const path=require('path');
-const foto='data:image/webp;base64,'+fs.readFileSync(path.join(__dirname,'foto-salgados.webp')).toString('base64');
+const b64=(f,m)=>`data:${m};base64,`+fs.readFileSync(path.join(__dirname,f)).toString('base64');
+const foto=b64('foto-salgados.webp','image/webp'),doces=b64('foto-doces.jpg','image/jpeg');
 const css=`*{margin:0;padding:0;box-sizing:border-box}
 body{width:1080px;height:var(--h);background:#120c07;font-family:Montserrat,sans-serif;color:#fff4dc;overflow:hidden}
 .c{position:relative;width:1080px;height:var(--h);overflow:hidden}
-.ph{position:absolute;left:0;width:1080px;top:var(--pt);height:var(--ph);background:url(${foto}) center/cover;
+.ph{position:absolute;left:0;width:1080px;top:var(--pt);height:var(--ph);display:flex;flex-direction:var(--dir);gap:6px;background:#f5b623;
  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 72%,transparent 100%)}
+.ph>div{flex:1;position:relative;background-size:cover;background-position:center}
+.s .lbl{top:var(--ls)}.d .lbl{top:var(--ld)}
+.ph .s{background-image:url(${foto})}.ph .d{background-image:url(${doces})}
+.lbl{position:absolute;left:50%;transform:translateX(-50%);background:rgba(18,12,7,.85);border:2px solid #f5b623;color:#f5b623;font-weight:900;font-size:var(--lf);letter-spacing:3px;padding:6px 20px;border-radius:999px}
 .shade{position:absolute;inset:0;background:radial-gradient(circle at 0 0,rgba(227,38,47,.3),transparent 40%)}
 .c:after{content:"";position:absolute;inset:22px;border:3px solid rgba(245,182,35,.6);border-radius:28px}
 .top,.bot{position:absolute;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:var(--gap);padding:0 60px;text-align:center;z-index:2}
@@ -22,7 +27,7 @@ h1 em{font-style:normal;color:#f5b623}
 .mini{font-size:var(--mini);font-weight:700;opacity:.9}`;
 const natal=s=>`<div class="top"><div class="pill">🎄 Especial de Natal</div>
 <h1>As encomendas de<br><em>Natal</em> já começaram</h1>
-<div class="sub">Aprenda a fazer <b>salgados e doces para vender</b><br>direto da sua cozinha, mesmo começando do zero</div></div>
+<div class="sub">Aprenda a fazer <b>salgados e doces para vender</b> direto da sua cozinha, mesmo começando do zero</div></div>
 <div class="bot"><div class="box"><div class="mini">650 receitas • acesso imediato</div><div class="price"><s>R$ 147</s><span>R$ 27</span></div></div>
 <div class="cta">Quero as receitas 👉</div></div>`;
 const r650=s=>`<div class="top"><div class="pill">Salgados &amp; Doces para vender</div>
@@ -30,12 +35,12 @@ const r650=s=>`<div class="top"><div class="pill">Salgados &amp; Doces para vend
 <div class="sub">Coxinha, kibe, esfiha, risoles, pizza, tortas e doces</div></div>
 <div class="bot"><div class="tag">🎁 BÔNUS: guia para vender no iFood</div><div class="box"><div class="price"><s>R$ 147</s><span>R$ 27</span></div></div>
 <div class="cta">Ver todas as receitas 👉</div>${s?'<div class="mini">Acesso vitalício • Garantia de 7 dias</div>':''}</div>`;
-const sizes={'1080x1080':{h:1080,s:0,v:'--h:1080px;--pt:300px;--ph:640px;--tt:55px;--bb:55px;--gap:14px;--pill:28px;--h1:76px;--sub:28px;--pr:84px;--cta:36px;--tag:28px;--mini:26px'},
- '1080x1920':{h:1920,s:1,v:'--h:1920px;--pt:640px;--ph:820px;--tt:150px;--bb:150px;--gap:24px;--pill:34px;--h1:108px;--sub:38px;--pr:110px;--cta:42px;--tag:34px;--mini:30px'}};
+const sizes={'1080x1080':{h:1080,s:0,v:'--dir:row;--ls:405px;--ld:405px;--lf:22px;--h:1080px;--pt:300px;--ph:640px;--tt:55px;--bb:55px;--gap:14px;--pill:28px;--h1:76px;--sub:28px;--pr:84px;--cta:36px;--tag:28px;--mini:26px'},
+ '1080x1920':{h:1920,s:1,v:'--dir:column;--ls:170px;--ld:30px;--lf:28px;--h:1920px;--pt:640px;--ph:820px;--tt:150px;--bb:150px;--gap:24px;--pill:34px;--h1:108px;--sub:38px;--pr:110px;--cta:42px;--tag:34px;--mini:30px'}};
 (async()=>{const b=await chromium.launch();
 for(const [n,f] of [['natal',natal],['650-receitas',r650]])for(const [k,c] of Object.entries(sizes)){
  const p=await b.newPage({viewport:{width:1080,height:c.h}});
- await p.setContent(`<!doctype html><html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet"><style>:root{${c.v}}${css}</style></head><body><div class="c"><div class="ph"></div><div class="shade"></div>${f(c.s)}</div></body></html>`,{waitUntil:'networkidle'});
+ await p.setContent(`<!doctype html><html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet"><style>:root{${c.v}}${css}</style></head><body><div class="c"><div class="ph"><div class="s"><span class="lbl">SALGADOS</span></div><div class="d"><span class="lbl">DOCES</span></div></div><div class="shade"></div>${f(c.s)}</div></body></html>`,{waitUntil:'networkidle'});
  await p.evaluate(()=>document.fonts.ready);
  await p.screenshot({path:path.join(__dirname,`criativo-foto-${n}-${k}.png`)});await p.close();}
 await b.close();})();
