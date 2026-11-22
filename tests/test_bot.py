@@ -66,3 +66,11 @@ def test_csv_source(tmp_path):
     [o] = CSVSource(str(f)).fetch()
     assert (o.price, o.old_price, o.coupon) == (1299.90, 1500.0, "CUPOM10")
     assert parse_price("279.00") == 279.0 and parse_price("") is None
+
+
+def test_clean_token():
+    from promobot.publishers.telegram import clean_token
+    tok = "123456789:" + "A" * 35
+    for raw in (tok, f" {tok} ", f"bot{tok}", f"bot{tok}/getMe", f'"{tok}"',
+                f"api.telegram.org/bot{tok}/getMe"):
+        assert clean_token(raw) == tok
