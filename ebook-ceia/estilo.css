@@ -1,0 +1,140 @@
+/* Ceia de Natal Econômica — Edição completa (A5, impressão) */
+@page { size: A5; margin: 13mm 12.5mm 15mm; }
+@page :first { margin: 0; }
+:root{
+  --paper:#fbf7ee; --paper2:#f5eedd; --ink:#2b2622; --soft:#6b6155;
+  --red:#9b2c2c; --green:#2f5d46; --gold:#b08a3e; --line:#e3d8c0;
+}
+*{ box-sizing:border-box; }
+html,body{ margin:0; }
+body{ font-family:"Crimson Text",Georgia,serif; color:var(--ink); font-size:10.2pt; line-height:1.45;
+      -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+b{ font-weight:700; }
+.tok{ position:absolute; left:0; top:0; font-size:3px; line-height:1; color:#fbf9f3; white-space:nowrap; }
+
+/* capa */
+.cover{ width:148mm; height:210mm; background:radial-gradient(circle at 30% 20%,#fffaf0,#f3e7cc); padding:9mm; }
+.cframe{ height:100%; border:2px solid var(--gold); outline:1px solid var(--gold); outline-offset:-5px; display:flex; flex-direction:column;
+         align-items:center; justify-content:center; text-align:center; padding:10mm 12mm; }
+.orn{ color:var(--gold); letter-spacing:.6em; margin:0 0 3mm; font-size:10pt; }
+.ckick{ font-family:Inter,sans-serif; font-size:7pt; letter-spacing:.28em; text-transform:uppercase; color:var(--red); font-weight:700; margin:0; }
+.cover h1{ font-size:34pt; line-height:1.02; margin:4mm 0 4mm; font-weight:700; }
+.csub{ font-style:italic; color:var(--soft); font-size:10.5pt; margin:0 0 5mm; }
+.tree{ width:30mm; margin:1mm 0 5mm; }
+.cstats{ display:flex; gap:4mm; margin-bottom:6mm; }
+.cstats div{ border:1px solid var(--line); background:rgba(255,255,255,.6); border-radius:3mm; padding:2mm 4mm; min-width:24mm; }
+.cstats b{ display:block; font-size:14pt; color:var(--red); }
+.cstats span{ font-family:Inter,sans-serif; font-size:6pt; letter-spacing:.12em; text-transform:uppercase; color:var(--soft); }
+.cby{ font-family:Inter,sans-serif; font-size:7pt; letter-spacing:.2em; text-transform:uppercase; color:var(--green); font-weight:700; margin:0 0 2mm; }
+.cnote{ font-size:7.5pt; color:var(--soft); margin:0; font-style:italic; }
+.dummy{ break-before:page; height:10mm; }
+
+/* estrutura */
+section.chap, section.toc{ break-before:page; position:relative; }
+section.part{ break-before:page; height:180mm; display:flex; flex-direction:column; justify-content:center; text-align:center; position:relative; }
+.pnum{ font-family:Inter,sans-serif; font-size:8pt; letter-spacing:.3em; text-transform:uppercase; color:var(--red); font-weight:700; margin:0; }
+section.part h2{ font-size:30pt; margin:2mm 0; }
+.psub{ font-style:italic; color:var(--soft); font-size:11pt; margin:4mm 8mm; }
+.pitems{ list-style:none; padding:0; margin:4mm 0 0; font-family:Inter,sans-serif; font-size:8pt; color:var(--soft); }
+.pitems li{ padding:1.2mm 0; border-bottom:1px dotted var(--line); margin:0 18mm; }
+.kick{ font-family:Inter,sans-serif; font-size:7pt; letter-spacing:.22em; text-transform:uppercase; color:var(--red); font-weight:700; margin:0; }
+h2{ font-size:21pt; line-height:1.12; margin:1mm 0 1.5mm; font-weight:700; break-after:avoid; }
+.rule{ height:2.5px; width:16mm; background:linear-gradient(90deg,var(--red),var(--gold)); border-radius:2px; margin:0 0 4mm; }
+.rule.c{ margin:2mm auto 2mm; }
+p{ margin:0 0 2.2mm; }
+.lead{ font-size:11.5pt; }
+.lead::first-letter{ float:left; font-size:3.1em; line-height:.82; padding:.06em .08em 0 0; color:var(--red); font-weight:700; }
+.sub2{ font-family:"Crimson Text",serif; font-weight:700; font-size:12.5pt; color:var(--green); margin:4.5mm 0 1.5mm; break-after:avoid; }
+ul,ol{ padding-left:5mm; margin:0 0 3mm; }
+li{ margin-bottom:1mm; }
+.note{ font-size:8.8pt; color:var(--soft); font-style:italic; }
+ol.big li, ol.steps5 li{ margin-bottom:2mm; }
+ol.steps5{ font-size:10.4pt; }
+.d24 table{ break-before:avoid; }
+
+/* caixas */
+.box{ border-radius:2.5mm; padding:2.2mm 3.2mm; margin:2.5mm 0; font-size:9.2pt; line-height:1.45; break-inside:avoid; }
+.box.tip{ background:rgba(47,93,70,.09); border-left:3px solid var(--green); }
+.box.alert{ background:rgba(176,138,62,.14); border-left:3px solid var(--gold); }
+.sheet{ border:1.5px dashed var(--gold); border-radius:3mm; padding:3.5mm 4mm; margin:4mm 0; background:#fffdf7; break-inside:avoid; }
+.sheet-t{ font-weight:700; color:var(--red); font-size:12pt; margin-bottom:2.5mm; }
+.sheet p{ margin-bottom:2.6mm; }
+.cb{ display:inline-block; width:3.2mm; height:3.2mm; border:1.2px solid #8a7f70; border-radius:.6mm; vertical-align:-.4mm; margin-right:1mm; background:#fff; }
+.cols2{ columns:2; column-gap:5mm; font-size:9.6pt; }
+.cols2 p{ break-inside:avoid; margin-bottom:1.6mm; }
+
+/* tabelas */
+table.t{ width:100%; border-collapse:collapse; margin:2mm 0 3mm; font-size:8.9pt; }
+table.t th{ font-family:Inter,sans-serif; font-size:6.6pt; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); text-align:left;
+            border-bottom:1.5px solid var(--line); padding:1.3mm 1.5mm; }
+table.t td{ border-bottom:1px solid var(--line); padding:1.1mm 1.5mm; vertical-align:top; }
+table.t tr{ break-inside:avoid; }
+table.t td:first-child{ font-weight:600; }
+table.scale td, table.scale th{ text-align:center; } table.scale td:first-child, table.scale th:first-child{ text-align:left; }
+table.scale tr:last-child td{ font-weight:700; color:var(--red); border-bottom:0; }
+table.fill td{ height:7.2mm; }
+table.shop td:nth-child(2), table.shop td:nth-child(3){ white-space:nowrap; font-family:Inter,sans-serif; font-size:7.8pt; color:var(--soft); }
+table.shop td:nth-child(3){ font-weight:700; color:var(--ink); text-align:right; }
+table.shop th:nth-child(3){ text-align:right; }
+table.shop td:first-child{ font-weight:400; }
+.blank{ display:inline-block; width:14mm; border-bottom:1px solid #a89c88; height:3mm; }
+.shcat{ font-weight:700; color:var(--green); font-size:11.5pt; margin:3.5mm 0 0; break-after:avoid; }
+table.sched td:first-child{ font-family:Inter,sans-serif; font-size:8pt; color:var(--red); font-weight:700; white-space:nowrap; }
+table.sched{ font-size:8.8pt; }
+
+.totals{ display:flex; gap:3mm; margin:3mm 0; }
+.totals div{ flex:1; border:1px solid var(--line); background:var(--paper2); border-radius:3mm; padding:2.5mm; text-align:center; }
+.totals b{ display:block; font-size:14pt; color:var(--red); }
+.totals span{ font-family:Inter,sans-serif; font-size:6.2pt; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); }
+
+/* sumário */
+ul.toc{ list-style:none; padding:0; margin:0; }
+ul.toc li{ display:flex; align-items:baseline; gap:2mm; padding:1.1mm 0; font-size:10.4pt; margin:0; }
+ul.toc li.tp{ font-family:Inter,sans-serif; font-size:7.4pt; letter-spacing:.16em; text-transform:uppercase; color:var(--red); font-weight:700; margin-top:2.5mm; }
+ul.toc .dots{ flex:1; border-bottom:1px dotted #b9ad97; transform:translateY(-1mm); }
+ul.toc .pg{ font-family:Inter,sans-serif; font-size:8pt; color:var(--soft); width:7mm; text-align:right; }
+
+/* cardápios */
+.menu{ border:1px solid var(--line); border-radius:3mm; padding:3mm 3.5mm 1.5mm; margin:3mm 0; background:#fffdf7; break-inside:avoid; }
+.mhead{ display:flex; justify-content:space-between; align-items:baseline; border-bottom:1.5px solid var(--gold); padding-bottom:1mm; margin-bottom:1.5mm; }
+.mname{ font-size:14pt; font-weight:700; color:var(--red); margin:0; }
+.mprice{ font-family:Inter,sans-serif; font-size:9pt; font-weight:700; margin:0; }
+.mprice span{ font-weight:400; color:var(--soft); font-size:7.5pt; }
+table.mt{ width:100%; border-collapse:collapse; font-size:9.2pt; }
+table.mt td{ padding:.8mm 0; vertical-align:top; }
+table.mt td:first-child{ font-family:Inter,sans-serif; font-size:6.4pt; letter-spacing:.1em; text-transform:uppercase; color:var(--green); font-weight:700; width:26mm; padding-top:1.3mm; }
+.menu .note{ margin:1.2mm 0 0; }
+
+/* receitas */
+article.recipe{ break-before:page; position:relative; }
+.rcat{ font-family:Inter,sans-serif; font-size:6.8pt; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); font-weight:700; margin:0; }
+.recipe h3{ font-size:17pt; line-height:1.12; margin:.8mm 0 1.5mm; color:var(--red); break-after:avoid; }
+.rintro{ font-style:italic; color:var(--soft); font-size:9.8pt; margin-bottom:1mm; }
+.chips{ display:flex; flex-wrap:wrap; gap:1.5mm; margin:1mm 0 2.5mm; }
+.chips span{ font-family:Inter,sans-serif; font-size:6.8pt; border:1px solid var(--line); background:var(--paper2); border-radius:99px; padding:.8mm 2.4mm; }
+.h4{ font-family:Inter,sans-serif; font-size:6.8pt; letter-spacing:.16em; text-transform:uppercase; color:var(--soft); font-weight:700; margin:0 0 1.2mm; break-after:avoid; }
+.rgrid .ing{ background:var(--paper2); border:1px solid var(--line); border-radius:2.5mm; padding:2.6mm 3.4mm .8mm; margin-bottom:3mm; break-inside:avoid; }
+.rgrid .ing ul{ columns:2; column-gap:5mm; font-size:9pt; padding-left:4mm; margin-bottom:1.6mm; }
+.rgrid .ing li{ break-inside:avoid; margin-bottom:.6mm; }
+.rgrid .ing .sub{ font-weight:700; font-size:9.4pt; color:var(--green); margin:1mm 0 .6mm; }
+.steps ol{ font-size:9.5pt; }
+.steps li{ margin-bottom:1.1mm; }
+.facts{ display:grid; grid-template-columns:1fr 1fr; gap:2mm 3mm; margin-top:2.5mm; }
+.facts div{ border-top:2px solid var(--gold); padding-top:1mm; font-size:8.4pt; line-height:1.35; break-inside:avoid; }
+.facts .fh{ font-family:Inter,sans-serif; font-size:6.4pt; letter-spacing:.12em; text-transform:uppercase; color:var(--red); font-weight:700; margin-bottom:.6mm; }
+.facts p{ margin:0; }
+
+/* cronograma */
+.day{ margin:2.5mm 0; break-inside:avoid; }
+.day .dt{ break-after:avoid; font-weight:700; color:var(--green); font-size:12pt; border-bottom:1px solid var(--line); margin-bottom:1.2mm; }
+.day ul{ list-style:none; padding-left:0; font-size:9.8pt; }
+.day.d24{ break-inside:auto; }
+
+/* sobras, faq */
+.mini{ border-left:3px solid var(--gold); padding:.5mm 0 .5mm 3mm; margin:2.4mm 0; break-inside:avoid; font-size:9.8pt; }
+.mt2{ font-weight:700; color:var(--red); margin-bottom:.6mm; font-size:10.6pt; }
+.faq{ border-bottom:1px solid var(--line); padding:2mm 0; break-inside:avoid; }
+.faq .q{ font-weight:700; color:var(--green); font-size:11pt; margin-bottom:.8mm; }
+.xmas{ text-align:center; font-style:italic; font-size:12pt; color:var(--red); margin-top:5mm; }
+.line{ border-bottom:1px solid #d6cbb4; height:8.5mm; }
+.copy{ font-size:7.5pt; color:var(--soft); text-align:center; margin-top:6mm; font-family:Inter,sans-serif; }
