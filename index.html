@@ -9,7 +9,17 @@
 <meta property="og:description" content="Monte seu cardápio de encomendas de Natal hoje. R$ 27, acesso imediato.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
-<!-- PIXEL DO META: cole aqui o código base do seu pixel (Gerenciador de Eventos > Configurar > Instalar código manualmente) -->
+<!-- Meta Pixel: Pixel Conta 01 -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','863029468574545');
+fbq('track','PageView');
+</script>
+<!-- Fim do Meta Pixel -->
 <style>
 :root{--bg:#15100B;--bg2:#211910;--ink:#FFF8EC;--muted:#D9CBB3;--gold:#F2B825;--red:#E02A2A;--red2:#B31F1F;--paper:#FFF8EC;--paperInk:#2A1E12}
 *{box-sizing:border-box}
@@ -85,6 +95,7 @@ footer a{color:#9C8B72}
 </style>
 </head>
 <body>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=863029468574545&ev=PageView&noscript=1"></noscript>
 
 <div class="topbar">Especial de Natal · Acesso imediato</div>
 
@@ -256,7 +267,13 @@ var CHECKOUT = "https://pay.kiwify.com.br/3Y5RTDC?afid=RYdJYIFZ";
   var qs = location.search ? location.search.slice(1) : "";
   var ok = /^https?:\/\//.test(CHECKOUT);
   var url = ok ? CHECKOUT + (qs ? (CHECKOUT.indexOf("?") > -1 ? "&" : "?") + qs : "") : "#oferta";
-  document.querySelectorAll(".js-buy").forEach(function(a){ a.href = url; });
+  document.querySelectorAll(".js-buy").forEach(function(a){
+    a.href = url;
+    // Registra no pixel o clique em "comprar" (a compra em si é registrada pela Kiwify)
+    a.addEventListener("click", function(){
+      if (ok && window.fbq) fbq("trackCustom", "CliqueComprar", {value: 27, currency: "BRL"});
+    });
+  });
 
   // Calculadora
   var custo = document.getElementById("custo"), mult = document.getElementById("mult");
