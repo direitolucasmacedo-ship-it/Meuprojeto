@@ -23,7 +23,8 @@
   "slogan": "Desde 1993 adoçando o seu dia",
   "foundingDate": "1993",
   "logo": "assets/logo.png",
-  "address": { "@type": "PostalAddress", "addressLocality": "Capelinha", "addressRegion": "MG", "postalCode": "39680-000", "addressCountry": "BR" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Capelinha", "addressRegion": "MG", "addressCountry": "BR" },
+  "telephone": "+55 33 99955-4495",
   "sameAs": ["https://www.instagram.com/dubomdoce/"]
 }
 </script>
@@ -123,6 +124,12 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,247,236,.92);backdro
 .card-meta{display:flex;gap:8px;flex-wrap:wrap}
 .card-meta span{font-size:.8rem;background:#fff;border:1px solid var(--cream-2);padding:4px 10px;border-radius:999px;color:var(--brown-2)}
 
+/* Vídeo */
+.video{background:#fff}
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.video-embed{display:flex;justify-content:center}
+.video-embed .instagram-media{margin:0!important;min-width:0!important;width:100%!important;max-width:460px!important;border-radius:var(--radius)!important;box-shadow:var(--shadow)!important}
+
 /* Receitas */
 .recipes-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:44px}
 .recipe{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:3/4;text-decoration:none;box-shadow:var(--shadow)}
@@ -218,7 +225,7 @@ footer{padding:56px 0 36px;color:var(--muted);font-size:.92rem}
 
 @media (max-width:960px){
   section{padding:72px 0}
-  .hero-grid,.about-grid,.where-grid,.faq-grid,.contact,.process-grid{grid-template-columns:1fr}
+  .video-grid,.hero-grid,.about-grid,.where-grid,.faq-grid,.contact,.process-grid{grid-template-columns:1fr}
   .hero-visual{max-width:380px}
   .hero-tag{left:0}
   .hero-logo{right:0;width:96px;height:96px}
@@ -252,6 +259,7 @@ footer{padding:56px 0 36px;color:var(--muted);font-size:.92rem}
     <button class="burger" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
     <ul class="menu">
       <li><a href="#sobre">Nossa história</a></li>
+      <li><a href="#video">Vídeo</a></li>
       <li><a href="#produtos">Produtos</a></li>
       <li><a href="#receitas">Receitas</a></li>
       <li><a href="#onde-comprar">Onde comprar</a></li>
@@ -318,6 +326,23 @@ footer{padding:56px 0 36px;color:var(--muted);font-size:.92rem}
         <div class="value"><i>🏭</i><div><b>Fábrica própria</b><span>Produção em Capelinha, MG.</span></div></div>
         <div class="value"><i>🤝</i><div><b>Gente da região</b><span>Orgulho de ser do Vale.</span></div></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- VÍDEO INSTITUCIONAL -->
+<section id="video" class="video">
+  <div class="container video-grid">
+    <div class="reveal">
+      <span class="eyebrow">Vídeo institucional</span>
+      <h2 class="section-title">Conheça a Dubom por dentro.</h2>
+      <p class="lead" style="margin-bottom:28px">Dê o play e veja de perto quem somos, como trabalhamos e o cuidado que colocamos em cada doce de leite que sai da nossa fábrica em Capelinha.</p>
+      <a href="https://www.instagram.com/p/CuO5EQzgdDx/" target="_blank" rel="noopener" class="btn btn-ghost">Assistir no Instagram</a>
+    </div>
+    <div class="video-embed reveal">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/CuO5EQzgdDx/" data-instgrm-version="14">
+        <a href="https://www.instagram.com/p/CuO5EQzgdDx/" target="_blank" rel="noopener">Ver o vídeo institucional da Dubom no Instagram</a>
+      </blockquote>
     </div>
   </div>
 </section>
@@ -498,9 +523,9 @@ footer{padding:56px 0 36px;color:var(--muted);font-size:.92rem}
         <h2>Vamos adoçar o seu dia?</h2>
         <p>Pedidos, revenda, parcerias, elogios ou dúvidas. A gente adora conversar.</p>
         <ul class="contact-list">
-          <li><i>💬</i><a href="#" target="_blank" rel="noopener" class="wa-link">WhatsApp <span class="todo">adicionar número</span></a></li>
+          <li><i>💬</i><a href="#" target="_blank" rel="noopener" class="wa-link">WhatsApp: (33) 99955-4495</a></li>
           <li><i>📸</i><a href="https://www.instagram.com/dubomdoce/" target="_blank" rel="noopener">@dubomdoce</a></li>
-          <li><i>📍</i><span>Capelinha, MG · CEP 39680-000 <span class="todo">endereço</span></span></li>
+          <li><i>📍</i><span>Capelinha-MG</span></li>
         </ul>
       </div>
       <form id="form-contato">
@@ -539,8 +564,7 @@ footer{padding:56px 0 36px;color:var(--muted);font-size:.92rem}
 
 <script>
 // >>> Coloque aqui o WhatsApp da Dubom: DDI + DDD + número, só dígitos (ex.: "5533999999999").
-// Enquanto estiver vazio, os botões de WhatsApp levam para o Instagram.
-const WHATSAPP = "";
+const WHATSAPP = "5533999554495";
 
 const waBase = WHATSAPP ? "https://wa.me/" + WHATSAPP : "https://www.instagram.com/dubomdoce/";
 document.querySelectorAll(".wa-link").forEach(a => a.href = waBase);
@@ -569,5 +593,6 @@ const io = new IntersectionObserver(es => es.forEach(en => {
 }), { threshold: .12 });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 </script>
+<script async src="https://www.instagram.com/embed.js"></script>
 </body>
 </html>
